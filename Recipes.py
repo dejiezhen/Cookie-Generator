@@ -47,7 +47,7 @@ class Recipes:
         files = open('./input/' + self.file, 'r')
         ingredient_lines = files.readlines()
         for ingredient in ingredient_lines:
-            ingredient_amount_array = ingredient.split('oz')
+            ingredient_amount_array = ingredient.split("oz")
             amount, name = ingredient_amount_array
             name = name.strip()
             amount = amount.strip()

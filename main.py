@@ -16,13 +16,13 @@ import os
 import glob
 
 def main():
-    generation_val = input("How many soup generations do you want? ")
-    mutation_rate = float(input("What probability do you want the soups to mutate (0.0 to 1.0, inclusive)?"))
+    generation_val = input("How many cookie generations do you want? ")
+    mutation_rate = float(input("What probability do you want the cookie recipes to mutate (0.0 to 1.0, inclusive)?"))
     if not mutation_rate:
         print('Automatically setting the mutation rate to 50%')
         mutation_rate = .5
     if mutation_rate > 1:
-        mutation_rate = input("What probability do you want the soups to mutate (0.0 to 1.0, inclusive)?")
+        mutation_rate = input("What probability do you want the cookie recipes to mutate (0.0 to 1.0, inclusive)?")
     input_path = './input'
     dir_list = os.listdir(input_path)
 
