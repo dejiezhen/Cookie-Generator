@@ -71,12 +71,12 @@ class Recipes:
 
     def normalize_recipe(self):
         """
-        Makes sure all amounts in recipe sum to 100
+        Makes sure all amounts in recipe sum to 55, the average oz total of all input recipes
         Args:
             None
         """
         sum_val = sum(self.ingredients_dictionary.values())
-        rescalar = 100 / sum_val
+        rescalar = 55 / sum_val
         for key, value in self.ingredients_dictionary.items():
             self.ingredients_dictionary[key] = value * rescalar
 
