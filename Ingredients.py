@@ -1,8 +1,8 @@
 """
 Sofía Hamby, Khalil Jackson, Bjorn Ludwig, and Dejie Zhen
 CSCI 3725
-PQ1: Let's Get Cooking
-09/22/22
+PQ2: Generation Day
+09/29/22
 
 The Ingredients.py file houses the Ingredients class, which takes in the orininal 
 input files of ingedients and creates new files of recipes. It houses the update_pantry 

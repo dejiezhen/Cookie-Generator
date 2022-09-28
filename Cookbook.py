@@ -1,8 +1,8 @@
 """
 Sofía Hamby, Khalil Jackson, Bjorn Ludwig, and Dejie Zhen
 CSCI 3725
-PQ1: Let's Get Cooking
-09/22/22
+PQ2: Generation Day
+09/29/22
 
 The Cookbook.py file houses the Cookbook class, which is called by the main function 
 and initialized by the file list, the targeted generation number, and the mutation 
@@ -180,6 +180,8 @@ class Cookbook:
                 first_baby.mutate()
                 second_baby.mutate()
             
+            first_baby.normalize_recipe()
+            second_baby.normalize_recipe()
             self.pantry.update_pantry(first_baby.ingredients_dictionary)
             self.pantry.update_pantry(second_baby.ingredients_dictionary)
             baby_list.append(first_baby)

@@ -1,8 +1,8 @@
 """
 Sofía Hamby, Khalil Jackson, Bjorn Ludwig, and Dejie Zhen
 CSCI 3725
-PQ1: Let's Get Cooking
-09/22/22
+PQ2: Generation Day
+09/29/22
 
 The Recipes.py file houses the Recipes class that is initialized by the file, 
 ingredients dictionary and pantry from the Cookbook class; it deals specifically 
@@ -50,7 +50,7 @@ class Recipes:
             ingredient_amount_array = ingredient.split("oz")
             amount, name = ingredient_amount_array
             name = name.strip()
-            amount = amount.strip()
+            amount = amount.strip() 
             # if same ingredient name, average
             if name in self.ingredients_dictionary:
                 current_ingredient_amount = self.ingredients_dictionary[name]
@@ -83,8 +83,7 @@ class Recipes:
     def mutate(self):
         """
         Uses random choice to determine which out of four mutation possibilities
-        to implement on the listed ingredients, then normalizes them to make sure 
-        all amounts sum up to 100.
+        to implement on the listed ingredients
         Args:
             None
         """
@@ -100,8 +99,6 @@ class Recipes:
             self.add_ing()
         else:                                                                     
             self.del_ing(list_ingredients)
-
-        self.normalize_recipe()
         
 
     def change_amt(self, list_ingredients):
