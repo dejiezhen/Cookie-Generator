@@ -4,9 +4,9 @@ CSCI 3725
 PQ2: Generation Day
 09/29/22
 
-The Cookbook.py file houses the Cookbook class, which is called by the main function 
-and initialized by the file list, the targeted generation number, and the mutation 
-rate. It houses the following functions... 
+The Cookbook.py file houses the Cookbook class, which is called by the main 
+function and initialized by the file list, the targeted generation number, and 
+the mutation rate. It houses the following functions... 
     - evaluate: evaluate the fitness of the recipes 
     - rank: returns the length of keys 
     - adds recipe instance: creates a new recipe from a new file input 
@@ -18,20 +18,21 @@ rate. It houses the following functions...
     - breed_generations: breeds the parent recipes
 """
 
-from Recipes import Recipes
-from Ingredients import Ingredients
+from recipes import Recipes
+from ingredients import Ingredients
 import os, time, random
 
 class Cookbook:
     def __init__(self, file_list, target_generation, mutation_rate) -> None:
         """
-        Cookbook class where a cookbook stores multiple recipes and where multiple 
-        generations of cookbooks are created
+        Cookbook class where a cookbook stores multiple recipes and where 
+        multiple generations of cookbooks are created
 
         Args: 
             file_list (arr): list of file names to read in for recipes
             target_generation (int): the total number of generations desired
-            mutation_rate (float): the probability that mutation will occur each time 
+            mutation_rate (float): the probability that mutation will occur 
+                                    each time 
         """
         self.file_list = file_list
         self.pantry = Ingredients()
@@ -40,10 +41,11 @@ class Cookbook:
         self.cookbook = []
         self.curr_time = ""
         self.mutation_rate = mutation_rate
-        
+     
     def evaluate(self, curr_dictionary):
         """
-        Return the length of the keys, which corresponds to the fitness (diversity of ingredients)
+        Return the length of the keys, which corresponds to the fitness 
+        (diversity of ingredients)
        
         Args: 
             curr_dictionary (dict): current dictionary of the sort list 
@@ -129,10 +131,12 @@ class Cookbook:
         """
         curr_baby_idx = 0
         for recipe in new_cookbook:
-            recipe.save_recipe_cookbook(self.curr_generation,curr_baby_idx, self.curr_time)
+            recipe.save_recipe_cookbook(self.curr_generation,curr_baby_idx, \
+                self.curr_time)
             curr_baby_idx += 1
 
-    def merge_parents(self, parent1_first_half, parent1_second_half, parent2_first_half, parent2_second_half):
+    def merge_parents(self, parent1_first_half, parent1_second_half, \
+        parent2_first_half, parent2_second_half):
         """
         Merges two parents to make new babies
        
@@ -165,10 +169,13 @@ class Cookbook:
             parent1 = list(self.cookbook[i].ingredients_dictionary.items())
             parent2 = list(self.cookbook[i+1].ingredients_dictionary.items())
             
-            parent1_first_half, parent1_second_half = parent1[:first_pivot], parent1[first_pivot:]
-            parent2_first_half, parent2_second_half  = parent2[:second_pivot], parent2[second_pivot:]
+            parent1_first_half, parent1_second_half = \
+                parent1[:first_pivot], parent1[first_pivot:]
+            parent2_first_half, parent2_second_half  = \
+                parent2[:second_pivot], parent2[second_pivot:]
             
-            new_babies = self.merge_parents(parent1_first_half, parent1_second_half, parent2_first_half, parent2_second_half)
+            new_babies = self.merge_parents(parent1_first_half, \
+                parent1_second_half, parent2_first_half, parent2_second_half)
             first_baby_dict, second_baby_dict = new_babies
 
             # Create new baby instances
@@ -188,16 +195,18 @@ class Cookbook:
             baby_list.append(second_baby)
         
         new_baby_list = self.rank(baby_list)
-        # extract the 50% best of the older cookbook and the 50% best of the baby list to make new cookbook 
-        new_cookbook = self.cookbook[:len(self.cookbook)//2] + new_baby_list[:len(new_baby_list)//2] 
+        # extract the 50% best of the older cookbook and the 50% 
+        #   best of the baby list to make new cookbook 
+        new_cookbook = self.cookbook[:len(self.cookbook)//2] + \
+            new_baby_list[:len(new_baby_list)//2] 
         new_cookbook = self.rank(new_cookbook)
         self.create_recipe_files(new_cookbook)
         self.cookbook = new_cookbook
     
     def breed_generations(self):
         """
-        Breeds new generations by looping the merge function to create new recipes/files until 
-        the targeted generation is reached. 
+        Breeds new generations by looping the merge function to create new 
+        recipes/files until the targeted generation is reached. 
      
         Args:
             None
