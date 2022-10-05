@@ -23,18 +23,18 @@ from ingredients import Ingredients
 import os, time, random
 
 class Cookbook:
-    def __init__(self, file_list, target_generation, mutation_rate) -> None:
+    def __init__(self, inspiring_set, target_generation, mutation_rate) -> None:
         """
         Cookbook class where a cookbook stores multiple recipes and where 
         multiple generations of cookbooks are created
 
         Args: 
-            file_list (arr): list of file names to read in for recipes
+            inspiring_set (arr): list of file names to read in for recipes
             target_generation (int): the total number of generations desired
             mutation_rate (float): the probability that mutation will occur 
                                     each time 
         """
-        self.file_list = file_list
+        self.inspiring_set = inspiring_set
         self.pantry = Ingredients()
         self.curr_generation = 0
         self.target_generation = int(target_generation)
@@ -51,6 +51,9 @@ class Cookbook:
             curr_dictionary (dict): current dictionary of the sort list 
         """
         return len(curr_dictionary.ingredients_dictionary.keys())
+    
+    def rank_new_ingredient(self, array):
+        
 
     def rank(self, array): 
         """
@@ -59,6 +62,7 @@ class Cookbook:
         Args:
             None
         """       
+        # compare new ingredients for each baby to inspiring set, divide by 6 then divide 
         array.sort(reverse=True, key=self.evaluate)
         return array
 
@@ -69,7 +73,7 @@ class Cookbook:
         Args:
             None
         """
-        for file in self.file_list:
+        for file in self.inspiring_set:
             new_recipe = Recipes(file, {}, self.pantry)
             self.cookbook.append(new_recipe)
 

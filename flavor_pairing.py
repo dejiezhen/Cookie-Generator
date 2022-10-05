@@ -55,10 +55,11 @@ def request_pairing(ingr, threshold, cat=None):
 def main():
     print("* * * Here are some examples of searching for Western flavor \
 pairings: * * *")
-    request_pairing("orange", 0.1, "herb")
+    """request_pairing("orange", 0.1, "herb")
     request_pairing("chocolate", 0.1, "spice")
     request_pairing("green tea", 0.6, "fruit")
-    request_pairing("coffee", 0.45)
+    request_pairing("coffee", 0.45)"""
+    request_pairing("", 0.1)
 
 
 if __name__ == "__main__":
