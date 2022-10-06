@@ -36,7 +36,7 @@ class Recipes:
         self.file = file
         self.ingredients_dictionary = ingredients_dictionary
         self.pantry = pantry
-        self.mutations_in_lineage = 0
+        self.mutations_in_lineage = mutations_in_lineage
 
 
     def process_recipe(self):

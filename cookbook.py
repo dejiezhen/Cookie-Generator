@@ -82,7 +82,7 @@ class Cookbook:
             None
         """
         for file in self.file_list:
-            new_recipe = Recipes(file, {}, self.pantry)
+            new_recipe = Recipes(file, {}, self.pantry, 0)
             self.cookbook.append(new_recipe)
 
     def make_initial_cookbook(self):
@@ -192,7 +192,8 @@ class Cookbook:
                 parent1_second_half, parent2_first_half, parent2_second_half)
             first_baby_dict, second_baby_dict = new_babies
 
-            # need to add together parents mutations in lineage to then add that to the new babies 
+            # add together parents' mutations in lineage to then 
+            #   sum those for the new babies 
             parent_mutations_in_lineage = self.cookbook[i].mutations_in_lineage + \
                 self.cookbook[i+1].mutations_in_lineage
             self.cookbook[i], self.cookbook[i+1]
