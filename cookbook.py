@@ -23,22 +23,23 @@ from ingredients import Ingredients
 import os, time, random
 
 class Cookbook:
-    def __init__(self, inspiring_set, target_generation, mutation_rate) -> None:
+    def __init__(self, file_list, target_generation, mutation_rate) -> None:
         """
         Cookbook class where a cookbook stores multiple recipes and where 
         multiple generations of cookbooks are created
 
         Args: 
-            inspiring_set (arr): list of file names to read in for recipes
+            file_list (arr): list of file names to read in for recipes
             target_generation (int): the total number of generations desired
             mutation_rate (float): the probability that mutation will occur 
                                     each time 
         """
-        self.inspiring_set = inspiring_set
+        self.file_list = file_list
         self.pantry = Ingredients()
         self.curr_generation = 0
         self.target_generation = int(target_generation)
         self.cookbook = []
+        self.inspiring_set = []
         self.curr_time = ""
         self.mutation_rate = mutation_rate
      
@@ -53,7 +54,14 @@ class Cookbook:
         return len(curr_dictionary.ingredients_dictionary.keys())
     
     def rank_new_ingredient(self, array):
-        
+        score = 0
+        for recipe in array:
+            ingredients_list = list(recipe.ingredients_dictionary.keys())
+            for inspiring_recipe in self.inspiring_set: 
+                inspiring_ingredients_list = list(inspiring_recipe.ingredients_dictionary.keys())
+                print(inspiring_ingredients_list ^ ingredients_list)
+                # score += len(inspiring_ingredients_list ^ ingredients_list)
+        return score
 
     def rank(self, array): 
         """
@@ -73,7 +81,7 @@ class Cookbook:
         Args:
             None
         """
-        for file in self.inspiring_set:
+        for file in self.file_list:
             new_recipe = Recipes(file, {}, self.pantry)
             self.cookbook.append(new_recipe)
 
@@ -91,7 +99,8 @@ class Cookbook:
             recipe.process_recipe()
             recipe.normalize_recipe()
             self.pantry.update_pantry(recipe.ingredients_dictionary)
-
+        self.inspiring_set = self.cookbook.copy()
+        print(self.inspiring_set)
         self.cookbook = self.rank(self.cookbook)
 
     def get_pivot_array(self):
@@ -178,18 +187,27 @@ class Cookbook:
             parent2_first_half, parent2_second_half  = \
                 parent2[:second_pivot], parent2[second_pivot:]
             
+
             new_babies = self.merge_parents(parent1_first_half, \
                 parent1_second_half, parent2_first_half, parent2_second_half)
             first_baby_dict, second_baby_dict = new_babies
 
+            # need to add together parents mutations in lineage to then add that to the new babies 
+            parent_mutations_in_lineage = self.cookbook[i].mutations_in_lineage + \
+                self.cookbook[i+1].mutations_in_lineage
+            self.cookbook[i], self.cookbook[i+1]
             # Create new baby instances
-            first_baby = Recipes(None, first_baby_dict, self.pantry)
-            second_baby = Recipes(None, second_baby_dict, self.pantry)
+            first_baby = Recipes(None, first_baby_dict, self.pantry, \
+                parent_mutations_in_lineage)
+            second_baby = Recipes(None, second_baby_dict, self.pantry, \
+                parent_mutations_in_lineage)
 
             mutation_chance = random.random()    # generate random float 0 to 1 
             if mutation_chance < self.mutation_rate:
                 first_baby.mutate()
                 second_baby.mutate()
+                first_baby.mutations_in_lineage += 1
+                second_baby.mutations_in_lineage += 1
             
             first_baby.normalize_recipe()
             second_baby.normalize_recipe()
@@ -226,3 +244,5 @@ class Cookbook:
         while self.curr_generation <= self.target_generation:
             self.merge()
             self.curr_generation += 1
+
+            

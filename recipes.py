@@ -21,7 +21,7 @@ specifically with the maintanence of recipes through these various functions...
 import random
 
 class Recipes:
-    def __init__(self, file, ingredients_dictionary, pantry) -> None:
+    def __init__(self, file, ingredients_dictionary, pantry, mutations_in_lineage) -> None:
         """
         Recipe class where recipe is primarily used and stored as a dictionary
         where the keys are the ingredients and the values are the corresponding 
@@ -36,6 +36,8 @@ class Recipes:
         self.file = file
         self.ingredients_dictionary = ingredients_dictionary
         self.pantry = pantry
+        self.mutations_in_lineage = 0
+
 
     def process_recipe(self):
         """
