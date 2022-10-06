@@ -130,8 +130,6 @@ class Recipes:
         """
         pantry_ing_list = list(self.pantry.pantry.keys())
         ingredient_to_remove = random.choice(list_ingredients)
-        # grab new ingredient from pantry
-        print(pantry_ing_list)
         ingredient_to_add = random.choice(pantry_ing_list)    
 
         while len(pantry_ing_list) != len(list_ingredients) and \
@@ -216,7 +214,7 @@ class Recipes:
         """
         recipe_name = self.name_recipe()
         file_name = 'gen'+ str(generation) + "_" + recipe_name + '.txt'
-        print(recipe_name)
+        # print(recipe_name)
         with open("output/" + curr_time + "/" + file_name, 'w') as f:
             for ingredient, amount in self.ingredients_dictionary.items(): 
                 amount = round(amount, 2)

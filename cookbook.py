@@ -20,7 +20,7 @@ the mutation rate. It houses the following functions...
 
 from recipes import Recipes
 from ingredients import Ingredients
-import os, time, random
+import os, time, random, copy
 
 class Cookbook:
     def __init__(self, file_list, target_generation, mutation_rate) -> None:
@@ -56,11 +56,11 @@ class Cookbook:
     def rank_new_ingredient(self, array):
         score = 0
         for recipe in array:
-            ingredients_list = list(recipe.ingredients_dictionary.keys())
+            ingredients_list = set(recipe.ingredients_dictionary.keys())
             for inspiring_recipe in self.inspiring_set: 
-                inspiring_ingredients_list = list(inspiring_recipe.ingredients_dictionary.keys())
-                print(inspiring_ingredients_list ^ ingredients_list)
-                # score += len(inspiring_ingredients_list ^ ingredients_list)
+                inspiring_ingredients_list = set(inspiring_recipe.ingredients_dictionary.keys())
+                different_ingredients = inspiring_ingredients_list.symmetric_difference(ingredients_list))
+                score += len(different_ingredients)
         return score
 
     def rank(self, array): 
@@ -82,7 +82,7 @@ class Cookbook:
             None
         """
         for file in self.file_list:
-            new_recipe = Recipes(file, {}, self.pantry)
+            new_recipe = Recipes(file, {}, self.pantry, 0)
             self.cookbook.append(new_recipe)
 
     def make_initial_cookbook(self):
@@ -99,8 +99,7 @@ class Cookbook:
             recipe.process_recipe()
             recipe.normalize_recipe()
             self.pantry.update_pantry(recipe.ingredients_dictionary)
-        self.inspiring_set = self.cookbook.copy()
-        print(self.inspiring_set)
+        self.inspiring_set = copy.deepcopy(self.cookbook)
         self.cookbook = self.rank(self.cookbook)
 
     def get_pivot_array(self):
@@ -203,7 +202,7 @@ class Cookbook:
                 parent_mutations_in_lineage)
 
             mutation_chance = random.random()    # generate random float 0 to 1 
-            if mutation_chance < self.mutation_rate:
+            if mutation_chance <= self.mutation_rate:
                 first_baby.mutate()
                 second_baby.mutate()
                 first_baby.mutations_in_lineage += 1
@@ -215,7 +214,7 @@ class Cookbook:
             self.pantry.update_pantry(second_baby.ingredients_dictionary)
             baby_list.append(first_baby)
             baby_list.append(second_baby)
-        
+        new_baby_list = self.rank_new_ingredient(baby_list)
         new_baby_list = self.rank(baby_list)
         # extract the 50% best of the older cookbook and the 50% 
         #   best of the baby list to make new cookbook 
