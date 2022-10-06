@@ -59,7 +59,7 @@ class Cookbook:
             ingredients_list = set(recipe.ingredients_dictionary.keys())
             for inspiring_recipe in self.inspiring_set: 
                 inspiring_ingredients_list = set(inspiring_recipe.ingredients_dictionary.keys())
-                different_ingredients = inspiring_ingredients_list.symmetric_difference(ingredients_list))
+                different_ingredients = inspiring_ingredients_list.symmetric_difference(ingredients_list)
                 score += len(different_ingredients)
         return score
 
