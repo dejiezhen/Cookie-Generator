@@ -211,8 +211,10 @@ class Cookbook:
             
             first_baby.normalize_recipe()
             second_baby.normalize_recipe()
+
             self.pantry.update_pantry(first_baby.ingredients_dictionary)
             self.pantry.update_pantry(second_baby.ingredients_dictionary)
+
             baby_list.append(first_baby)
             baby_list.append(second_baby)
         new_baby_list = self.rank_new_ingredient(baby_list)

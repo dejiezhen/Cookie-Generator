@@ -122,7 +122,7 @@ class Recipes:
 
     def change_ing(self, list_ingredients):
         """
-        Randomly removes an ingredient from the recipe then randomly add an 
+        Randomly removes an ingredient from the recipe then randomly adds an 
         ingredient (not currently in the recipe) from the pantry list
 
         Args:
@@ -160,14 +160,18 @@ class Recipes:
 
     def del_ingredient(self, list_ingredients):
         """
-        Deletes a random ingredient from the recipe
+        Deletes a random ingredient from the recipe, but leaves fundamental 
+        baking ingredients alone
         
         Args:
             None
         """
-        ingredient_to_remove = random.choice(list_ingredients)
+        essential_ingredients = ['flour', 'sugar', 'egg', 'butter', 
+        'baking soda', 'baking powder']
+        deletable_list = [i for i in list_ingredients if i not in essential_ingredients]
+        ingredient_to_remove = random.choice(deletable_list)
         del self.ingredients_dictionary[ingredient_to_remove]
-
+    
     def name_recipe(self):
         """
         Give a name based on the second and third most populous ingredient 
