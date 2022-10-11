@@ -202,6 +202,15 @@ class Recipes:
 
         return recipe_underscore
 
+    def evaluate_novel_ingredient(self, inspiring_set):
+        score = 0
+        for inspiring_recipe in inspiring_set: 
+            inspiring_ingredients_list = set(inspiring_recipe.ingredients_dictionary.keys())
+            ingredients_list = set(self.ingredients_dictionary.keys())
+            different_ingredients = inspiring_ingredients_list.symmetric_difference(ingredients_list)
+            score += len(different_ingredients)
+        return score
+
     def save_recipe_cookbook(self, generation, idx, curr_time):
         """
         Saves recipe as .txt file

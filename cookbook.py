@@ -52,16 +52,9 @@ class Cookbook:
             curr_dictionary (dict): current dictionary of the sort list 
         """
         return len(curr_dictionary.ingredients_dictionary.keys())
-    
-    def rank_new_ingredient(self, array):
-        score = 0
-        for recipe in array:
-            ingredients_list = set(recipe.ingredients_dictionary.keys())
-            for inspiring_recipe in self.inspiring_set: 
-                inspiring_ingredients_list = set(inspiring_recipe.ingredients_dictionary.keys())
-                different_ingredients = inspiring_ingredients_list.symmetric_difference(ingredients_list)
-                score += len(different_ingredients)
-        return score
+        
+    def evaluate_new_ingredients(self, curr_recipe):
+        return curr_recipe.evaluate_novel_ingredient(self.inspiring_set)
 
     def rank(self, array): 
         """
@@ -72,6 +65,10 @@ class Cookbook:
         """       
         # compare new ingredients for each baby to inspiring set, divide by 6 then divide 
         array.sort(reverse=True, key=self.evaluate)
+        return array
+
+    def rank_ingredient_variety(self,array):
+        array.sort(reverse=True, key=self.evaluate_new_ingredients)
         return array
 
     def add_recipe_instance(self):
@@ -215,8 +212,10 @@ class Cookbook:
             self.pantry.update_pantry(second_baby.ingredients_dictionary)
             baby_list.append(first_baby)
             baby_list.append(second_baby)
-        new_baby_list = self.rank_new_ingredient(baby_list)
-        new_baby_list = self.rank(baby_list)
+
+        new_baby_list = self.rank_ingredient_variety(baby_list)
+        # new_baby_list = self.rank(baby_list)
+
         # extract the 50% best of the older cookbook and the 50% 
         #   best of the baby list to make new cookbook 
         new_cookbook = self.cookbook[:len(self.cookbook)//2] + \
