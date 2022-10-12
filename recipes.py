@@ -19,7 +19,6 @@ specifically with the maintanence of recipes through these various functions...
 """
 
 import random
-from flavor_pairing import INGRED_CATEGORIES, INGREDIENT_LIST, pairing, request_pairing, similarity
 
 class Recipes:
     def __init__(self, file, ingredients_dictionary, pantry, mutations_in_lineage) -> None:
@@ -233,6 +232,9 @@ class Recipes:
         return recipe_underscore
 
     def evaluate_novel_ingredient(self, inspiring_set):
+        """
+        neeed docstring 
+        """
         score = 0
         for inspiring_recipe in inspiring_set: 
             inspiring_ingredients_list = set(inspiring_recipe.ingredients_dictionary.keys())
@@ -240,6 +242,55 @@ class Recipes:
             different_ingredients = inspiring_ingredients_list.symmetric_difference(ingredients_list)
             score += len(different_ingredients)
         return score
+
+    def evaluate_ingredient_cohesion(self):
+        """
+        need docstring 
+        """
+        """
+        score = 0
+
+        threshold = 
+
+        for ingredients in recipe:
+            for all other ingredients in recipe:
+                if dot product > threshold:
+                    score += 1
+        
+        divide score by size of self
+        
+        """
+
+        forbidden_ingredients = ["baking soda", "cream of tartar", 
+        "sugar", "flower", "shortening", "white chocolate", 
+        "light brown sugar", "dark brown sugar"]
+
+        ingredients_to_see = list(self.ingredients_dictionary.keys)
+        score = 0
+        threshold = 5      # check this 
+
+
+        for first_index in range(0, len(ingredients_to_see) - 1):
+            for second_index in range(first_index + 1, len(ingredients_to_see)):
+                first_ingredient = ingredients_to_see[first_index]
+                second_ingredient = ingredients_to_see[second_index]
+                cohesion = similarity(first_ingredient, second_ingredient)
+                
+                print(first_ingredient)
+                print(second_ingredient)
+
+                if first_ingredient in forbidden_ingredients or \
+                    second_ingredient in forbidden_ingredients:
+                    print("FORBIDDEN!")
+                    pass
+
+                elif cohesion > threshold: 
+                    score += 1 
+
+        score = score/self.ingredients_dictionary.size()  # regularize 
+        return score
+
+
 
     def save_recipe_cookbook(self, generation, idx, curr_time):
         """
