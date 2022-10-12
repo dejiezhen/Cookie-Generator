@@ -19,6 +19,7 @@ specifically with the maintanence of recipes through these various functions...
 """
 
 import random
+from flavor_pairing import *
 
 class Recipes:
     def __init__(self, file, ingredients_dictionary, pantry, mutations_in_lineage) -> None:
