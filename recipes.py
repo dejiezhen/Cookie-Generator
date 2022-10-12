@@ -12,16 +12,18 @@ specifically with the maintanence of recipes through these various functions...
     - normalize_recipe: ensures the recipe amounts sum to one-hundred
     - mutate: mutates the recipe in one of four ways
     - change_amt: chnages the amount of an ingredient
-    - change_ing: changed the ingreident
-    - add_ing: adds ingredient to recipe
+    - change_ingredient: changed the ingreident
+    - add_ingredient: adds ingredient to recipe
     - del_ingredient: deletes ingredient from reicpe
     - save_recipe_cookbook: turns recipe into .txt file
 """
 
 import random
 from flavor_pairing import *
+# from flavor_pairing import INGRED_CATEGORIES, INGREDIENT_LIST, INGREDIENT_LIST, similarity, pairingEGORIES, INGREDIENT_IST, request_pairing, similarity
 
 class Recipes:
+
     def __init__(self, file, ingredients_dictionary, pantry, mutations_in_lineage) -> None:
         """
         Recipe class where recipe is primarily used and stored as a dictionary
@@ -94,16 +96,16 @@ class Recipes:
         Args:
             None
         """
-        mutation_options = ["change_amt", "change_ing", "add_ing", \
+        mutation_options = ["change_amt", "change_ingredient", "add_ingredient", \
              "del_ingredient"]
         mutation_type = random.choice(mutation_options)
         list_ingredients = list(self.ingredients_dictionary.keys())
         if mutation_type == "change_amt":
             self.change_amt(list_ingredients)
-        elif mutation_type == "change_ing":
-            self.change_ing(list_ingredients)
-        elif mutation_type == "add_ing":
-            self.add_ing()
+        elif mutation_type == "change_ingredient":
+            self.change_ingredient(list_ingredients)
+        elif mutation_type == "add_ingredient":
+            self.add_ingredient()
         else:                                                                     
             self.del_ingredient(list_ingredients)
         
@@ -121,7 +123,7 @@ class Recipes:
         self.ingredients_dictionary[ingredient_to_change] = original_amount * \
             amount_modifier
 
-    def change_ing(self, list_ingredients):
+    def change_ingredient(self, list_ingredients):
         """
         Randomly removes an ingredient from the recipe then randomly adds an 
         ingredient (not currently in the recipe) from the pantry list
@@ -129,23 +131,21 @@ class Recipes:
         Args:
             list_ingredients (arr): list of ingredients
         """
-        pantry_ing_list = list(self.pantry.pantry.keys())
+        pantry_ingredient_list = list(self.pantry.pantry.keys())
         ingredient_to_remove = random.choice(list_ingredients)
-        ingredient_to_add = random.choice(pantry_ing_list)    
+        ingredient_to_add = random.choice(pantry_ingredient_list)    
 
-        while len(pantry_ing_list) != len(list_ingredients) and \
+        while len(pantry_ingredient_list) != len(list_ingredients) and \
             ingredient_to_add in self.ingredients_dictionary: 
-            ingredient_to_add = random.choice(pantry_ing_list)
+            ingredient_to_add = random.choice(pantry_ingredient_list)
 
         del self.ingredients_dictionary[ingredient_to_remove]
         self.ingredients_dictionary[ingredient_to_add] = \
             self.pantry.pantry[ingredient_to_add]     # use pantry amount 
 
-    def add_mutation(self):
-        mutation_options = [add_ing, add_flavored_ingredient]
+        pass        # addition_options = ["add_ing"re"dient, add_flavored_ing"redient]
 
-
-    def add_ing(self):
+    def add_ingredient(self):
         """
         Add a new ingredient to the recipe from the pantry (not already in the 
         recipe)
@@ -154,35 +154,18 @@ class Recipes:
         Args:
             None
         """
-        pantry_ing_list = list(self.pantry.pantry.keys()) # keys = ingredients
+        pantry_ingredient_list = list(self.pantry.pantry.keys()) # keys = ingredients
         # grab new ingredient from pantry
-        ingredient_to_add = random.choice(pantry_ing_list)     
+        ingredient_to_add = random.choice(pantry_ingredient_list)     
 
-        while len(pantry_ing_list) != len(self.ingredients_dictionary) and \
+        while len(pantry_ingredient_list) != len(self.ingredients_dictionary) and \
             ingredient_to_add in self.ingredients_dictionary:  
-            ingredient_to_add = random.choice(pantry_ing_list)  
+            ingredient_to_add = random.choice(pantry_ingredient_list)  
             
-            request_pairing ()  
-            pairing()
-            similarity()
-            
+            # flavor_pairing."""request_pairing()  """
+                        
         self.ingredients_dictionary[ingredient_to_add] = \
             self.pantry.pantry[ingredient_to_add]      # use pantry amount 
-
-    # can't just combine bc have to call on it and ask it what to do
-    def add_flavored_ingredient(self):
-        pantry_ing_list = list(self.pantry.pantry.keys()) # keys = ingredients
-        base_ingredient = random.choice(pantry_ing_list)
-        ingredient_to_add = random.choice(INGREDIENT_LIST)
-
-        while len(INGREDIENT_LIST) != len(self.ingredients_dictionary) and \
-            ingredient_to_add in self.ingredients_dictionary:
-            ingredient_to_add = 
-
-        request_pairing(base_ingredient, )#amountalrinrecipe)
-        amount = self.ingredients_dictionary[ingredient_to_add] = \
-            self.pantry.pantry[ingredient_to_add]
-
 
     def del_ingredient(self, list_ingredients):
         """
@@ -194,7 +177,8 @@ class Recipes:
         """
         essential_ingredients = ['flour', 'sugar', 'egg', 'butter', 
         'baking soda', 'baking powder']
-        deletable_list = [i for i in list_ingredients if i not in essential_ingredients]
+        deletable_list = [ingredient for ingredient in list_ingredients \
+                            if ingredient not in essential_ingredients]
         ingredient_to_remove = random.choice(deletable_list)
         del self.ingredients_dictionary[ingredient_to_remove]
     
@@ -218,13 +202,11 @@ class Recipes:
         second_random_name = sorted_recipe[second_random_idx][0]
         while second_random_name in ingredient_remove_array:
             second_random_idx = \
-                random.randint(1, len(self.ingredients_dictionary)-1)
-            second_random_name = sorted_recipe[second_random_idx][0]
+                random.randint= nd_random_name = sorted_recipe[second_random_idx][0]
 
         while first_random_idx == second_random_idx:
             second_random_idx = random.randint(1, len(self.ingredients_dictionary)-1)
             
-        
         recipe_name = sorted_recipe[first_random_idx][0] + " and " + \
              sorted_recipe[second_random_idx][0]
 
@@ -248,19 +230,6 @@ class Recipes:
         """
         need docstring 
         """
-        """
-        score = 0
-
-        threshold = 
-
-        for ingredients in recipe:
-            for all other ingredients in recipe:
-                if dot product > threshold:
-                    score += 1
-        
-        divide score by size of self
-        
-        """
 
         forbidden_ingredients = ["baking soda", "cream of tartar", 
         "sugar", "flower", "shortening", "white chocolate", 
@@ -269,7 +238,6 @@ class Recipes:
         ingredients_to_see = list(self.ingredients_dictionary.keys)
         score = 0
         threshold = 5      # check this 
-
 
         for first_index in range(0, len(ingredients_to_see) - 1):
             for second_index in range(first_index + 1, len(ingredients_to_see)):

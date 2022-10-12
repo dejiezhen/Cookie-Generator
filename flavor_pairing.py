@@ -59,7 +59,7 @@ pairings: * * *")
     request_pairing("chocolate", 0.1, "spice")"""
     request_pairing("green tea", 0.6, "fruit")
     request_pairing("coffee", 0.45)
-    print(request_pairing[0])
+    # print(request_pairing[0])
     # request_pairing("", 0.1)
     # print(INGRED_CATEGORIES)
     # print("SPACEEeeeeeeeeee----------------------------------")

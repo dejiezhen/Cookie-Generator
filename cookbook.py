@@ -53,11 +53,11 @@ class Cookbook:
         """
         return len(curr_dictionary.ingredients_dictionary.keys())
         
-    def evaluate_new_ingredients(self, curr_recipe):
+    def evaluate_unique_ingredients(self, curr_recipe):
         return curr_recipe.evaluate_novel_ingredient(self.inspiring_set)
 
-    def evaluate_ingredient_cohesion(self):
-        pass
+    def evaluate_ingredient_cohesion(self, curr_recipe):
+        return curr_recipe.evaluate_ingredient_cohesion()
 
     def rank(self, array): 
         """
@@ -66,16 +66,16 @@ class Cookbook:
         Args:
             None
         """       
-        # compare new ingredients for each baby to inspiring set, divide by 6 then divide 
         array.sort(reverse=True, key=self.evaluate)
         return array
 
-    def rank_ingredient_variety(self,array):
-        array.sort(reverse=True, key=self.evaluate_new_ingredients)
+    def rank_ingredient_variety(self, array):
+        array.sort(reverse=True, key=self.evaluate_unique_ingredients)
         return array
 
-    def rank_ingredient_cohesion(self):
-        pass
+    def rank_ingredient_cohesion(self, array):
+        array.sort(reverse=True, key=self.evaluate_ingredient_cohesion)
+        return array 
 
     def add_recipe_instance(self):
         """

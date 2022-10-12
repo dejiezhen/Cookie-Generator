@@ -12,22 +12,30 @@ cookbook instance.
 
 from cookbook import Cookbook
 import os
-import glob
-
 
 def get_generation_value():
     generation_val = input("How many cookie generations do you want? ")
+    while not generation_val.isdigit():
+        print('Please input a valid generation value!')
+        generation_val = input("How many cookie generations do you want? ")
     return generation_val
 
 def get_mutation_probability():
-    mutation_rate = float(input("What probability do you want the cookie \
-recipes to mutate (0.0 to 1.0, inclusive)?"))
+    mutation_rate = input("What probability do you want the cookie \
+recipes to mutate (0.0 to 1.0, inclusive)?")
+
+    if mutation_rate == "":
+        print('Automatically setting the mutation rate to 50%')
+        mutation_rate = 0.5
+        return mutation_rate
     
-    if mutation_rate < 0 or mutation_rate > 1:
+    while float(mutation_rate) < 0 or float(mutation_rate) > 1:
+        print('Please input a valid mutation rate. You can also press \
+enter for default mutation value\n')
         mutation_rate = input("What probability do you want the cookie \
 recipes to mutate (0.0 to 1.0, inclusive)?")
     
-    if mutation_rate != 0 and not mutation_rate:
+    if str(mutation_rate) != 0 and not mutation_rate:
         print('Automatically setting the mutation rate to 50%')
         mutation_rate = .5
     
