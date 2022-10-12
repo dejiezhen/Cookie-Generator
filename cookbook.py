@@ -56,6 +56,9 @@ class Cookbook:
     def evaluate_new_ingredients(self, curr_recipe):
         return curr_recipe.evaluate_novel_ingredient(self.inspiring_set)
 
+    def evaluate_ingredient_cohesion(self):
+        pass
+
     def rank(self, array): 
         """
         Ranks the recipes on the basis of the evaluate function
@@ -70,6 +73,9 @@ class Cookbook:
     def rank_ingredient_variety(self,array):
         array.sort(reverse=True, key=self.evaluate_new_ingredients)
         return array
+
+    def rank_ingredient_cohesion(self):
+        pass
 
     def add_recipe_instance(self):
         """
