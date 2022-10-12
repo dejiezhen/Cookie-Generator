@@ -50,16 +50,22 @@ def request_pairing(ingr, threshold, cat=None):
     else:
         print("\nWhat pairs well with " + ingr + "?")
         pairing(ingr, threshold)
-
+        
 
 def main():
     print("* * * Here are some examples of searching for Western flavor \
 pairings: * * *")
     """request_pairing("orange", 0.1, "herb")
-    request_pairing("chocolate", 0.1, "spice")
+    request_pairing("chocolate", 0.1, "spice")"""
     request_pairing("green tea", 0.6, "fruit")
-    request_pairing("coffee", 0.45)"""
-    request_pairing("", 0.1)
+    request_pairing("coffee", 0.45)
+    print(request_pairing[0])
+    # request_pairing("", 0.1)
+    # print(INGRED_CATEGORIES)
+    # print("SPACEEeeeeeeeeee----------------------------------")
+    # print(INGREDIENT_LIST)
+    # prints all items with categories from fun list
+    # print(sorted(INGRED_CATEGORIES.items(), key=lambda kv:(kv[1], kv[0])))
 
 
 if __name__ == "__main__":

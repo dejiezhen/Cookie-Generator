@@ -19,6 +19,7 @@ specifically with the maintanence of recipes through these various functions...
 """
 
 import random
+from flavor_pairing import INGRED_CATEGORIES, INGREDIENT_LIST, pairing, request_pairing, similarity
 
 class Recipes:
     def __init__(self, file, ingredients_dictionary, pantry, mutations_in_lineage) -> None:
@@ -140,23 +141,48 @@ class Recipes:
         self.ingredients_dictionary[ingredient_to_add] = \
             self.pantry.pantry[ingredient_to_add]     # use pantry amount 
 
+    def add_mutation(self):
+        mutation_options = [add_ing, add_flavored_ingredient]
+
+
     def add_ing(self):
         """
         Add a new ingredient to the recipe from the pantry (not already in the 
         recipe)
+        # pick random ingredient and find something to pair with and have add
         
         Args:
             None
         """
-        pantry_ing_list = list(self.pantry.pantry.keys())
+        pantry_ing_list = list(self.pantry.pantry.keys()) # keys = ingredients
         # grab new ingredient from pantry
         ingredient_to_add = random.choice(pantry_ing_list)     
 
         while len(pantry_ing_list) != len(self.ingredients_dictionary) and \
             ingredient_to_add in self.ingredients_dictionary:  
-            ingredient_to_add = random.choice(pantry_ing_list)    
+            ingredient_to_add = random.choice(pantry_ing_list)  
+            
+            request_pairing ()  
+            pairing()
+            similarity()
+            
         self.ingredients_dictionary[ingredient_to_add] = \
             self.pantry.pantry[ingredient_to_add]      # use pantry amount 
+
+    # can't just combine bc have to call on it and ask it what to do
+    def add_flavored_ingredient(self):
+        pantry_ing_list = list(self.pantry.pantry.keys()) # keys = ingredients
+        base_ingredient = random.choice(pantry_ing_list)
+        ingredient_to_add = random.choice(INGREDIENT_LIST)
+
+        while len(INGREDIENT_LIST) != len(self.ingredients_dictionary) and \
+            ingredient_to_add in self.ingredients_dictionary:
+            ingredient_to_add = 
+
+        request_pairing(base_ingredient, )#amountalrinrecipe)
+        amount = self.ingredients_dictionary[ingredient_to_add] = \
+            self.pantry.pantry[ingredient_to_add]
+
 
     def del_ingredient(self, list_ingredients):
         """
