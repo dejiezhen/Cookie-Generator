@@ -59,6 +59,10 @@ class Cookbook:
     def evaluate_ingredient_cohesion(self, curr_recipe):
         return curr_recipe.evaluate_ingredient_cohesion()
 
+    def combo_evaluate(self, curr_recipe):
+        return (curr_recipe.evaluate_novel_ingredient(self.inspiring_set) + \
+            curr_recipe.evaluate_ingredient_cohesion()) / 2
+
     def rank(self, array): 
         """
         Ranks the recipes on the basis of the evaluate function
@@ -67,6 +71,7 @@ class Cookbook:
             None
         """       
         array.sort(reverse=True, key=self.evaluate)
+        # array.sort(reverse=True, key=self.combo_evaluate)      # THIS SHOULD BE THE EVALUATE WE USE
         return array
 
     def rank_ingredient_variety(self, array):
