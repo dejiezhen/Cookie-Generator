@@ -248,8 +248,9 @@ class Recipes:
         for inspiring_recipe in inspiring_set: 
             inspiring_ingredients_list = set(inspiring_recipe.ingredients_dictionary.keys())
             ingredients_list = set(self.ingredients_dictionary.keys())
-            different_ingredients = inspiring_ingredients_list.difference(ingredients_list)
+            different_ingredients = ingredients_list.difference(inspiring_ingredients_list)
             score += len(different_ingredients)
+        print(score)
         return score
 
     def evaluate_ingredient_cohesion(self):

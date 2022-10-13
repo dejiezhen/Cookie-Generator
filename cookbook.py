@@ -71,6 +71,7 @@ class Cookbook:
 
     def rank_ingredient_variety(self, array):
         array.sort(reverse=True, key=self.evaluate_unique_ingredients)
+        print('-------')
         return array
 
     def rank_ingredient_cohesion(self, array):
