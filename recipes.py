@@ -101,7 +101,7 @@ class Recipes:
             None
         """
         mutation_options = ["change_amt", "change_ingredient", "add_ingredient", \
-             "del_ingredient"]
+             "add_flavor_ingredient", "del_ingredient"]
         mutation_type = random.choice(mutation_options)
         list_ingredients = list(self.ingredients_dictionary.keys())
         if mutation_type == "change_amt":
@@ -110,6 +110,8 @@ class Recipes:
             self.change_ingredient(list_ingredients)
         elif mutation_type == "add_ingredient":
             self.add_ingredient()
+        elif mutation_type == "add_flavor_ingredient":
+            self.add_flavor_ingredient()
         else:                                                                     
             self.del_ingredient(list_ingredients)
         
