@@ -73,7 +73,12 @@ class Recipes:
             None
         """
         # do not let pivot be at very beginning or end 
-        return random.randint(1, len(self.ingredients_dictionary)-2)    
+
+        if len(self.ingredients_dictionary) >= 3:
+            return random.randint(1, len(self.ingredients_dictionary)-2) 
+        else: 
+            # Check edge case if arr length is less than 3
+            return random.randint(0, len(self.ingredients_dictionary)-1)   
 
     def normalize_recipe(self):
         """
@@ -182,6 +187,11 @@ class Recipes:
         ingredient_to_remove = random.choice(deletable_list)
         del self.ingredients_dictionary[ingredient_to_remove]
     
+    def get_name(self, sorted_recipe):
+        random_idx = random.randint(0, len(sorted_recipe)-1)
+        random_name = sorted_recipe[random_idx][0]
+        return random_name
+    
     def name_recipe(self):
         """
         Give a name based on the second and third most populous ingredient 
@@ -192,27 +202,28 @@ class Recipes:
         sorted_recipe = sorted(self.ingredients_dictionary.items(), \
             key=lambda x: x[1], reverse=True)
 
-        first_random_idx = random.randint(1, len(self.ingredients_dictionary)-1)
-        first_random_name = sorted_recipe[first_random_idx][0]
-        while first_random_name in ingredient_remove_array:
-            first_random_idx = random.randint(1, len(self.ingredients_dictionary)-1)
-            first_random_name = sorted_recipe[first_random_idx][0]
+        # first_random_idx = random.randint(0, len(sorted_recipe)-1)
+        # first_random_name = sorted_recipe[first_random_idx][0]
+        first_random_name = self.get_name(sorted_recipe)
+        while first_random_name in ingredient_remove_array and \
+            len(sorted_recipe) > len(ingredient_remove_array):
+            first_random_name = self.get_name(sorted_recipe)
 
-        second_random_idx = random.randint(1, len(self.ingredients_dictionary)-1)
-        second_random_name = sorted_recipe[second_random_idx][0]
-        while second_random_name in ingredient_remove_array:
-            second_random_idx = \
-                random.randint= nd_random_name = sorted_recipe[second_random_idx][0]
+        second_random_name = self.get_name(sorted_recipe)
+        # plus one since we don't want the same first random name
+        while second_random_name in ingredient_remove_array and \
+            len(sorted_recipe) > len(ingredient_remove_array) + 1:
+            second_random_name = self.get_name(sorted_recipe)
 
-        while first_random_idx == second_random_idx:
-            second_random_idx = random.randint(1, len(self.ingredients_dictionary)-1)
+        while first_random_name == second_random_name and len(sorted_recipe) > 1:
+            second_random_name = self.get_name(sorted_recipe)
             
-        recipe_name = sorted_recipe[first_random_idx][0] + " and " + \
-             sorted_recipe[second_random_idx][0]
+        recipe_name = (first_random_name + " and " + \
+             second_random_name).replace(' ', '_')
 
-        recipe_underscore = recipe_name.replace(' ', '_')
+        # recipe_underscore = recipe_name.replace(' ', '_')
 
-        return recipe_underscore
+        return recipe_name
 
     def evaluate_novel_ingredient(self, inspiring_set):
         """
