@@ -176,6 +176,7 @@ class Recipes:
         # pantry_ingredient_list = list(self.pantry.pantry.keys()) # keys = ingredients
         ingredient_to_add = random.choice(INGREDIENT_LIST)
         base_ingredient = random.choice(self.ingredients_dictionary.keys())
+        # finding ingredient to flavor match off of in current recipe
 
         while len(INGREDIENT_LIST) != len(self.ingredients_dictionary) and \
             ingredient_to_add in self.ingredients_dictionary:
