@@ -168,6 +168,21 @@ class Recipes:
                         
         self.ingredients_dictionary[ingredient_to_add] = \
             self.pantry.pantry[ingredient_to_add]      # use pantry amount 
+ 
+    def add_flavor_ingredient(self):
+        
+        # pantry_ingredient_list = list(self.pantry.pantry.keys()) # keys = ingredients
+        ingredient_to_add = random.choice(INGREDIENT_LIST)
+        base_ingredient = random.choice(self.ingredients_dictionary.keys())
+
+        while len(INGREDIENT_LIST) != len(self.ingredients_dictionary) and \
+            ingredient_to_add in self.ingredients_dictionary:
+
+            request_pairing(base_ingredient, self.ingredients_dictionary[ingredient_to_add])
+            ingredient_to_add = random.choice(INGREDIENT_LIST)
+
+        self.ingredients_dictionary[ingredient_to_add] = \
+            INGREDIENT_LIST[ingredient_to_add]
 
     def del_ingredient(self, list_ingredients):
         """
@@ -199,23 +214,6 @@ class Recipes:
         sorted_recipe = sorted(self.ingredients_dictionary.items(), \
             key=lambda x: x[1], reverse=True)
 
-<<<<<<< HEAD
-        first_random_idx = random.randint(1, len(self.ingredients_dictionary)-1)
-        first_random_name = sorted_recipe[first_random_idx][0]
-        while first_random_name in ingredient_remove_array:
-            first_random_idx = random.randint(1, len(self.ingredients_dictionary)-1)
-            first_random_name = sorted_recipe[first_random_idx][0]
-
-        second_random_idx = random.randint(1, len(self.ingredients_dictionary)-1)
-        second_random_name = sorted_recipe[second_random_idx][0]
-        while second_random_name in ingredient_remove_array:
-            second_random_idx = \
-                random.randint= nd_random_name = sorted_recipe[second_random_idx][0]
-                # why not used?
-
-        while first_random_idx == second_random_idx:
-            second_random_idx = random.randint(1, len(self.ingredients_dictionary)-1)
-=======
         # first_random_idx = random.randint(0, len(sorted_recipe)-1)
         # first_random_name = sorted_recipe[first_random_idx][0]
         first_random_name = self.get_name(sorted_recipe)
@@ -231,7 +229,6 @@ class Recipes:
 
         while first_random_name == second_random_name and len(sorted_recipe) > 1:
             second_random_name = self.get_name(sorted_recipe)
->>>>>>> 5b72d53a6034f1b9b9bd901068a4865e4ad4347e
             
         recipe_name = (first_random_name + " and " + \
              second_random_name).replace(' ', '_')
