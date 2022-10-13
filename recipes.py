@@ -20,7 +20,6 @@ specifically with the maintanence of recipes through these various functions...
 
 import random
 from flavor_pairing import *
-# from flavor_pairing import INGRED_CATEGORIES, INGREDIENT_LIST, INGREDIENT_LIST, similarity, pairingEGORIES, INGREDIENT_IST, request_pairing, similarity
 
 class Recipes:
 
@@ -161,8 +160,6 @@ class Recipes:
         while len(pantry_ingredient_list) != len(self.ingredients_dictionary) and \
             ingredient_to_add in self.ingredients_dictionary:  
             ingredient_to_add = random.choice(pantry_ingredient_list)  
-            
-            # flavor_pairing."""request_pairing()  """
                         
         self.ingredients_dictionary[ingredient_to_add] = \
             self.pantry.pantry[ingredient_to_add]      # use pantry amount 
@@ -203,6 +200,7 @@ class Recipes:
         while second_random_name in ingredient_remove_array:
             second_random_idx = \
                 random.randint= nd_random_name = sorted_recipe[second_random_idx][0]
+                # why not used?
 
         while first_random_idx == second_random_idx:
             second_random_idx = random.randint(1, len(self.ingredients_dictionary)-1)
