@@ -14,6 +14,10 @@ from cookbook import Cookbook
 import os
 
 def get_generation_value():
+    """
+    Gets user input to determine the number of cookie recipe generations 
+    and ensures that the value is a digit.
+    """
     generation_val = input("How many cookie generations do you want? ")
     while not generation_val.isdigit():
         print('Please input a valid generation value!')
@@ -21,6 +25,10 @@ def get_generation_value():
     return generation_val
 
 def get_mutation_probability():
+    """
+    Gets user input to determine the mutation rate of the cookie recipes 
+    and ensures it is a value between 0 and 1, inclusive.
+    """
     mutation_rate = input("What probability do you want the cookie \
 recipes to mutate (0.0 to 1.0, inclusive)?")
 
@@ -44,6 +52,12 @@ recipes to mutate (0.0 to 1.0, inclusive)?")
 
 
 def main():
+    """
+    Gets user input for the number of generations and mutation 
+    rate before inputting files for the inspiring set and breeding 
+    generations using a Cookbook.
+
+    """
     generation_val = get_generation_value()
     mutation_rate = get_mutation_probability()
     input_path = './input'
