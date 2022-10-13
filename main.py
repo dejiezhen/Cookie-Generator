@@ -24,7 +24,7 @@ def get_mutation_probability():
     mutation_rate = input("What probability do you want the cookie \
 recipes to mutate (0.0 to 1.0, inclusive)?")
 
-    if mutation_rate == "":
+    if mutation_rate != 0 and not mutation_rate:
         print('Automatically setting the mutation rate to 50%')
         mutation_rate = 0.5
         return mutation_rate
@@ -35,11 +35,12 @@ enter for default mutation value\n')
         mutation_rate = input("What probability do you want the cookie \
 recipes to mutate (0.0 to 1.0, inclusive)?")
     
-    if str(mutation_rate) != 0 and not mutation_rate:
-        print('Automatically setting the mutation rate to 50%')
-        mutation_rate = .5
+        if mutation_rate != 0 and not mutation_rate:
+            print('Automatically setting the mutation rate to 50%')
+            mutation_rate = 0.5
+            return mutation_rate
     
-    return mutation_rate
+    return float(mutation_rate)
 
 
 def main():
