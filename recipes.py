@@ -20,7 +20,6 @@ specifically with the maintanence of recipes through these various functions...
 
 import random
 from flavor_pairing import *
-# from flavor_pairing import INGRED_CATEGORIES, INGREDIENT_LIST, INGREDIENT_LIST, similarity, pairingEGORIES, INGREDIENT_IST, request_pairing, similarity
 
 class Recipes:
 
@@ -102,7 +101,7 @@ class Recipes:
             None
         """
         mutation_options = ["change_amt", "change_ingredient", "add_ingredient", \
-             "del_ingredient"]
+             "add_flavor_ingredient", "del_ingredient"]
         mutation_type = random.choice(mutation_options)
         list_ingredients = list(self.ingredients_dictionary.keys())
         if mutation_type == "change_amt":
@@ -111,6 +110,8 @@ class Recipes:
             self.change_ingredient(list_ingredients)
         elif mutation_type == "add_ingredient":
             self.add_ingredient()
+        elif mutation_type == "add_flavor_ingredient":
+            self.add_flavor_ingredient()
         else:                                                                     
             self.del_ingredient(list_ingredients)
         
@@ -166,11 +167,24 @@ class Recipes:
         while len(pantry_ingredient_list) != len(self.ingredients_dictionary) and \
             ingredient_to_add in self.ingredients_dictionary:  
             ingredient_to_add = random.choice(pantry_ingredient_list)  
-            
-            # flavor_pairing."""request_pairing()  """
                         
         self.ingredients_dictionary[ingredient_to_add] = \
             self.pantry.pantry[ingredient_to_add]      # use pantry amount 
+ 
+    def add_flavor_ingredient(self):
+        
+        # pantry_ingredient_list = list(self.pantry.pantry.keys()) # keys = ingredients
+        ingredient_to_add = random.choice(INGREDIENT_LIST)
+        base_ingredient = random.choice(self.ingredients_dictionary.keys())
+
+        while len(INGREDIENT_LIST) != len(self.ingredients_dictionary) and \
+            ingredient_to_add in self.ingredients_dictionary:
+
+            request_pairing(base_ingredient, self.ingredients_dictionary[ingredient_to_add])
+            ingredient_to_add = random.choice(INGREDIENT_LIST)
+
+        self.ingredients_dictionary[ingredient_to_add] = \
+            INGREDIENT_LIST[ingredient_to_add]
 
     def del_ingredient(self, list_ingredients):
         """
