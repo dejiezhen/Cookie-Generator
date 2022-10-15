@@ -69,8 +69,8 @@ class Cookbook:
         print(curr_recipe.evaluate_ingredient_cohesion())
         print('---')
         print("average score: ")
-        avg_score = (curr_recipe.evaluate_novel_ingredient(self.inspiring_set) + \
-            curr_recipe.evaluate_ingredient_cohesion()) / 2
+        avg_score = (curr_recipe.evaluate_novel_ingredient(self.inspiring_set) * \
+            curr_recipe.evaluate_ingredient_cohesion())
         print(avg_score)
         print('---')
 
