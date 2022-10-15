@@ -195,11 +195,6 @@ class Recipes:
         else:
             base_ingredient = random.sample(ingredient_set.intersection(ingredient_list_set), 1)
         
-        # potentially: make new list that has in common of both, pick random from there
-        print('base ingr')
-        print(base_ingredient)
-        #make these into sets
-        
         # maybe add float thing for amount
         base_amount = self.ingredients_dictionary[base_ingredient[0]]
         print("base amount")
@@ -211,9 +206,6 @@ class Recipes:
         print(pairings_dictionary)
         # error: unhashable 
 
-
-        # print(pairings_dictionary)
-        # print(type(pairings_dictionary))
         #ingredients_list = list(pairings_dictionary.items())
         #ingredient_to_add = random.choice(ingredients_list)
         # print(ingredient_to_add)
