@@ -61,18 +61,19 @@ class Cookbook:
 
     def combo_evaluate(self, curr_recipe):
 
-        print("novel ingredient score: ")
-        print(curr_recipe.evaluate_novel_ingredient(self.inspiring_set))
-        print('---')
+        # print("novel ingredient score: ")
+        # print(curr_recipe.evaluate_novel_ingredient(self.inspiring_set))
+        # print('---')
 
-        print("cohesion score: ")
-        print(curr_recipe.evaluate_ingredient_cohesion())
-        print('---')
-        print("average score: ")
+        # print("cohesion score: ")
+        # print(curr_recipe.evaluate_ingredient_cohesion())
+        # print('---')
+        # print("average score: ")
+        # multiplication to favor recipes with higher cohesion
         avg_score = (curr_recipe.evaluate_novel_ingredient(self.inspiring_set) * \
             curr_recipe.evaluate_ingredient_cohesion())
-        print(avg_score)
-        print('---')
+        # print(avg_score)
+        # print('---')
 
         return avg_score
 

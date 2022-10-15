@@ -143,7 +143,7 @@ class Recipes:
         Args:
             list_ingredients (arr): list of ingredients
         """
-        pantry_ingredient_set = set(list(self.pantry.pantry.keys())).difference(self.allergies)
+        pantry_ingredient_set = set(self.pantry.pantry.keys()).difference(self.allergies)
         ingredient_to_remove = random.choice(list_ingredients)
         ingredient_to_add = random.choice(pantry_ingredient_set)    
 
@@ -166,7 +166,7 @@ class Recipes:
         Args:
             None
         """
-        pantry_ingredient_set = set(list(self.pantry.pantry.keys())).difference(self.allergies) # keys = ingredients
+        pantry_ingredient_set = set(self.pantry.pantry.keys()).difference(self.allergies) # keys = ingredients
         # grab new ingredient from pantry
         ingredient_to_add = random.choice(pantry_ingredient_set)     
 
@@ -179,20 +179,13 @@ class Recipes:
             # use pantry amount 
 
     def add_flavor_ingredient(self):
-        # pantry_ingredient_set = list(self.pantry.pantry.keys()) # keys = ingredients
-        # keys()
-        # finding ingredient to flavor match off of in current recipe
-        #ingredient_to_add = random.choice(list(enumerate(INGREDIENT_LIST)))
-        """for index in ingredient_to_add:
-                index = index"""
-        
-        # print(INGREDIENT_LIST)
-        """makes sure base_ingr is in both"""
+
         base_ingredient = random.choice(list(self.ingredients_dictionary.keys()))
         recipe_ingredient_set = set(self.ingredients_dictionary.keys()).difference(self.allergies)
         ingredient_list_set = set(INGREDIENT_LIST).difference(self.allergies)
         set_common = recipe_ingredient_set.intersection(ingredient_list_set)
         base_amount = 0
+
         if len(set_common) == 0:
             # if they don't have anything in common 
             choices = ingredient_list_set# .difference(self.allergies)
@@ -204,43 +197,21 @@ class Recipes:
             base_ingredient = random.choice(list(choices))
             base_amount = self.ingredients_dictionary[base_ingredient]
 
-        
-        # potentially: make new list that has in common of both, pick random from there
-        # print('base ingr')
-        # print(base_ingredient)
-        # #make these into sets
-        
-        # print("base amount")
-        # print(base_amount)
         pairings_dictionary = {}
         threshold = 0.001       # could have dicts still that are zero size 
-
-        """sorted_recipe = sorted(self.ingredients_dictionary.items(), \
-            key=lambda x: x[1], reverse=True)"""
-        
 
         pairings_dictionary = pairing(base_ingredient, threshold)
         #new_ingredient = max(pairings_dictionary, key=pairings_dictionary.get)
         
+        #random choice of top three most cohesive
         find_top_three = Counter(pairings_dictionary)
         top_three = find_top_three.most_common(3)
-        print("list of 3 cohesive options")
-        print(top_three)
-        #new_ingredient = random.choice(list(top_three.keys()))
-        new_ingredient = random.choice(top_three)
-        print("New ingredient:")
-        print(new_ingredient)
+        random_top_three = dict(top_three)  
+        new_ingredient = random.choice(list(random_top_three.keys()))
+
+        #add new, fun ingredient to recipe
         self.ingredients_dictionary[new_ingredient] = base_amount
-        #it's taking in a key value pair into list-
-        #fix: only take in key
-        print(self.ingredients_dictionary)
-
-
-        #new_ingredient = random.choice(list())
-        # sorted_pairings_dictionary = sorted(pairings.ingredients_dictionary.items(), \
-        #   key = lambda x: x[1], reverse=True)
-
-        
+   
     def del_ingredient(self, list_ingredients):
         """
         Deletes a random ingredient from the recipe, but leaves fundamental 
