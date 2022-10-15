@@ -18,6 +18,9 @@ class Ingredients:
         """      
         self.pantry = {}
 
+    def get_category_amount(category):
+        pass;
+
     def update_pantry(self, recipe):
         """
         Add new ingredients / update ingredient averages to the pantry based 
