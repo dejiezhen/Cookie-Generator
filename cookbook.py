@@ -60,8 +60,21 @@ class Cookbook:
         return curr_recipe.evaluate_ingredient_cohesion()
 
     def combo_evaluate(self, curr_recipe):
-        return (curr_recipe.evaluate_novel_ingredient(self.inspiring_set) + \
+
+        print("novel ingredient score: ")
+        print(curr_recipe.evaluate_novel_ingredient(self.inspiring_set))
+        print('---')
+
+        print("cohesion score: ")
+        print(curr_recipe.evaluate_ingredient_cohesion())
+        print('---')
+        print("average score: ")
+        avg_score = (curr_recipe.evaluate_novel_ingredient(self.inspiring_set) + \
             curr_recipe.evaluate_ingredient_cohesion()) / 2
+        print(avg_score)
+        print('---')
+
+        return avg_score
 
     def rank(self, array): 
         """
@@ -70,13 +83,12 @@ class Cookbook:
         Args:
             None
         """       
-        array.sort(reverse=True, key=self.evaluate)
-        # array.sort(reverse=True, key=self.combo_evaluate)      # THIS SHOULD BE THE EVALUATE WE USE
+        # array.sort(reverse=True, key=self.evaluate)
+        array.sort(reverse=True, key=self.combo_evaluate)      # THIS SHOULD BE THE EVALUATE WE USE
         return array
 
     def rank_ingredient_variety(self, array):
         array.sort(reverse=True, key=self.evaluate_unique_ingredients)
-        print('-------')
         return array
 
     def rank_ingredient_cohesion(self, array):
@@ -227,8 +239,11 @@ class Cookbook:
             baby_list.append(first_baby)
             baby_list.append(second_baby)
 
-        new_baby_list = self.rank_ingredient_variety(baby_list)
-        # new_baby_list = self.rank(baby_list)
+        # new_baby_list = self.rank_ingredient_variety(baby_list)
+    
+        new_baby_list = self.rank(baby_list)
+
+        # new_baby_list = self.rank_ingredient_cohesion(baby_list)
 
         # extract the 50% best of the older cookbook and the 50% 
         #   best of the baby list to make new cookbook 
@@ -257,5 +272,4 @@ class Cookbook:
         while self.curr_generation <= self.target_generation:
             self.merge()
             self.curr_generation += 1
-
             

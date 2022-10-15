@@ -19,6 +19,7 @@ specifically with the maintanence of recipes through these various functions...
 """
 
 import random
+from collections import Counter
 from flavor_pairing import *
 
 class Recipes:
@@ -39,6 +40,8 @@ class Recipes:
         self.ingredients_dictionary = ingredients_dictionary
         self.pantry = pantry
         self.mutations_in_lineage = mutations_in_lineage
+        self.allergies = set(['macadamia nut', 'walnut', 'pecan', 'cashew nut', \
+            'pistachio', 'almond', 'brazil nut'])
 
 
     def process_recipe(self):
@@ -68,11 +71,11 @@ class Recipes:
     def pivot(self):
         """
         Returns an int to be used as the pivot point in the recipes.
+
         Args:
             None
         """
         # do not let pivot be at very beginning or end 
-
         if len(self.ingredients_dictionary) >= 3:
             return random.randint(1, len(self.ingredients_dictionary)-2) 
         else: 
@@ -126,7 +129,9 @@ class Recipes:
         ingredient_to_change = random.choice(list_ingredients)       
         original_amount = self.ingredients_dictionary[ingredient_to_change]
         # decrease or increase by up to 50%
-        amount_modifier = random.uniform(0.5, 1.5)    
+        # amount_modifier = random.uniform(0.5, 1.5)  
+        # amount_modifier = random.uniform(0.75, 1.25)        
+        amount_modifier = random.uniform(0.9, 1.1)    
         self.ingredients_dictionary[ingredient_to_change] = original_amount * \
             amount_modifier
 
@@ -138,19 +143,19 @@ class Recipes:
         Args:
             list_ingredients (arr): list of ingredients
         """
-        pantry_ingredient_list = list(self.pantry.pantry.keys())
+        pantry_ingredient_set = set(list(self.pantry.pantry.keys())).difference(self.allergies)
         ingredient_to_remove = random.choice(list_ingredients)
-        ingredient_to_add = random.choice(pantry_ingredient_list)    
+        ingredient_to_add = random.choice(pantry_ingredient_set)    
 
-        while len(pantry_ingredient_list) != len(list_ingredients) and \
+        while len(pantry_ingredient_set) != len(list_ingredients) and \
             ingredient_to_add in self.ingredients_dictionary: 
-            ingredient_to_add = random.choice(pantry_ingredient_list)
+            ingredient_to_add = random.choice(pantry_ingredient_set)
 
         del self.ingredients_dictionary[ingredient_to_remove]
         self.ingredients_dictionary[ingredient_to_add] = \
             self.pantry.pantry[ingredient_to_add]     # use pantry amount 
 
-        pass        # addition_options = ["add_ing"re"dient, add_flavored_ing"redient]
+        # pass        # addition_options = ["add_ing"re"dient, add_flavored_ing"redient]
 
     def add_ingredient(self):
         """
@@ -161,20 +166,20 @@ class Recipes:
         Args:
             None
         """
-        pantry_ingredient_list = list(self.pantry.pantry.keys()) # keys = ingredients
+        pantry_ingredient_set = set(list(self.pantry.pantry.keys())).difference(self.allergies) # keys = ingredients
         # grab new ingredient from pantry
-        ingredient_to_add = random.choice(pantry_ingredient_list)     
+        ingredient_to_add = random.choice(pantry_ingredient_set)     
 
-        while len(pantry_ingredient_list) != len(self.ingredients_dictionary) and \
+        while len(pantry_ingredient_set) != len(self.ingredients_dictionary) and \
             ingredient_to_add in self.ingredients_dictionary:  
-            ingredient_to_add = random.choice(pantry_ingredient_list)  
+            ingredient_to_add = random.choice(pantry_ingredient_set)  
                         
         self.ingredients_dictionary[ingredient_to_add] = \
             self.pantry.pantry[ingredient_to_add]      
             # use pantry amount 
 
     def add_flavor_ingredient(self):
-        # pantry_ingredient_list = list(self.pantry.pantry.keys()) # keys = ingredients
+        # pantry_ingredient_set = list(self.pantry.pantry.keys()) # keys = ingredients
         # keys()
         # finding ingredient to flavor match off of in current recipe
         #ingredient_to_add = random.choice(list(enumerate(INGREDIENT_LIST)))
@@ -184,17 +189,23 @@ class Recipes:
         # print(INGREDIENT_LIST)
         """makes sure base_ingr is in both"""
         base_ingredient = random.choice(list(self.ingredients_dictionary.keys()))
-        ingredient_set = set(self.ingredients_dictionary.keys())
-        ingredient_list_set = set(INGREDIENT_LIST)
-        set_common = ingredient_set.intersection(ingredient_list_set)
-        # if len(set a & set b) == 0, base_ingredient = random.choice(INGREDIENT_LIST), otherwise, run while loop
-        print(set_common)
+        recipe_ingredient_set = set(self.ingredients_dictionary.keys()).difference(self.allergies)
+        ingredient_list_set = set(INGREDIENT_LIST).difference(self.allergies)
+        set_common = recipe_ingredient_set.intersection(ingredient_list_set)
+        base_amount = 0
         if len(set_common) == 0:
-            base_ingredient = random.choice(INGREDIENT_LIST)
-        # random.choice(set a & set b)
+            # if they don't have anything in common 
+            choices = ingredient_list_set# .difference(self.allergies)
+            base_ingredient = random.choice(list(choices))
+            base_amount = 0.55
         else:
-            base_ingredient = random.sample(ingredient_set.intersection(ingredient_list_set), 1)
+            # if they do have in commom
+            choices = recipe_ingredient_set.intersection(ingredient_list_set)
+            base_ingredient = random.choice(list(choices))
+            base_amount = self.ingredients_dictionary[base_ingredient]
+
         
+<<<<<<< HEAD
         # maybe add float thing for amount
         base_amount = self.ingredients_dictionary[base_ingredient[0]]
         print("base amount")
@@ -209,12 +220,35 @@ class Recipes:
         #ingredients_list = list(pairings_dictionary.items())
         #ingredient_to_add = random.choice(ingredients_list)
         # print(ingredient_to_add)
+=======
+        # potentially: make new list that has in common of both, pick random from there
+        # print('base ingr')
+        # print(base_ingredient)
+        # #make these into sets
+        
+        # print("base amount")
+        # print(base_amount)
+        pairings_dictionary = {}
+        threshold = 0.001       # could have dicts still that are zero size 
 
-        # while ingredient_to_add[0] in self.ingredients_dictionary:
-        #     ingredient_to_add = random.choice(ingredients_list)
+        """sorted_recipe = sorted(self.ingredients_dictionary.items(), \
+            key=lambda x: x[1], reverse=True)"""
+        
 
-        # new_ingredient = INGREDIENT_LIST[INGREDIENT_LIST.index(ingredient_to_add)] 
-        # print(new_ingredient, base_amount)
+        pairings_dictionary = pairing(base_ingredient, threshold)
+        # sorted_pairings_dictionary = sorted(pairings.ingredients_dictionary.items(), \
+        #   key = lambda x: x[1], reverse=True)
+        print("list of cohesive options")
+        #find_top_three = Counter(pairings_dictionary)
+        #top_three = find_top_three.most_common(3)
+        
+>>>>>>> dcf4e63f84e0c070315aee7f5cd3907e99e850bf
+
+        #new_ingredient = random.choice(list())
+
+        new_ingredient = max(pairings_dictionary, key=pairings_dictionary.get)
+ 
+        self.ingredients_dictionary[new_ingredient] = base_amount
 
     def del_ingredient(self, list_ingredients):
         """
@@ -264,9 +298,7 @@ class Recipes:
             
         recipe_name = (first_random_name + " and " + \
              second_random_name).replace(' ', '_')
-
-        # recipe_underscore = recipe_name.replace(' ', '_')
-
+             
         return recipe_name
 
     def evaluate_novel_ingredient(self, inspiring_set):
@@ -279,8 +311,9 @@ class Recipes:
             ingredients_list = set(self.ingredients_dictionary.keys())
             different_ingredients = ingredients_list.difference(inspiring_ingredients_list)
             score += len(different_ingredients)
-        print(score)
-        return score
+        
+        regularized_score = score / len(self.ingredients_dictionary)
+        return regularized_score
 
     def evaluate_ingredient_cohesion(self):
         """
@@ -291,16 +324,16 @@ class Recipes:
         "sugar", "flower", "shortening", "white chocolate", 
         "light brown sugar", "dark brown sugar"]
 
-        ingredients_to_see = list(self.ingredients_dictionary.keys)
+        ingredients_to_see = list(self.ingredients_dictionary.keys())
         score = 0
-        threshold = 4      # check this 
+        threshold = 0.3      # check this !!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         for first_index in range(0, len(ingredients_to_see) - 1):
             for second_index in range(first_index + 1, len(ingredients_to_see)):
                 first_ingredient = ingredients_to_see[first_index]
                 second_ingredient = ingredients_to_see[second_index]                
-                print(first_ingredient)
-                print(second_ingredient)
+                # print(first_ingredient)
+                # print(second_ingredient)
 
                 if first_ingredient in INGREDIENT_LIST and \
                     second_ingredient in INGREDIENT_LIST:
@@ -312,7 +345,7 @@ class Recipes:
                 else: 
                     pass
 
-        score = score/self.ingredients_dictionary.size()  # regularize 
+        score = score/len(self.ingredients_dictionary)  # regularize 
         return score
 
     def save_recipe_cookbook(self, generation, idx, curr_time):
@@ -332,3 +365,4 @@ class Recipes:
             for ingredient, amount in self.ingredients_dictionary.items(): 
                 amount = round(amount, 2)
                 f.write(str(amount) + " oz " + str(ingredient) + "\n")
+
