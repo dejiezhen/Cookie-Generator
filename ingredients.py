@@ -30,8 +30,8 @@ class Ingredients:
         """
         for name, amount in recipe.items():
             if name in self.pantry:
-                curr_pantry_average = self.pantry[name]
-                average = (curr_pantry_average + amount) / 2
-                self.pantry[name] = average
+                pantry_regularized_total = self.pantry[name]
+                new_regularized_total = (pantry_regularized_total + amount) / 2
+                self.pantry[name] = new_regularized_total
             else:
                 self.pantry[name] = amount

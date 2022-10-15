@@ -10,7 +10,9 @@ cookbook instance.
 """
 
 
+from mimetypes import init
 from cookbook import Cookbook
+from convergence import Convergence
 import os
 
 def get_generation_value():
@@ -19,7 +21,7 @@ def get_generation_value():
     and ensures that the value is a digit.
     """
     generation_val = input("How many cookie generations do you want? ")
-    while not generation_val.isdigit():
+    while not generation_val.isdigit() or int(generation_val) < 1:
         print('Please input a valid generation value!')
         generation_val = input("How many cookie generations do you want? ")
     return generation_val
@@ -64,7 +66,9 @@ def main():
     dir_list = os.listdir(input_path)
     initial_cookbook = Cookbook(dir_list, generation_val, mutation_rate)
     initial_cookbook.breed_generations()
-
+    convergence_instance = Convergence(initial_cookbook)
+    convergence_instance.generation_data()
+    convergence_instance.plotting()
 
 if __name__ == '__main__':
     main()
