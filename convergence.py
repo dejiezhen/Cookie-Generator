@@ -4,13 +4,14 @@ import matplotlib.pyplot as plt
 
 
 class Convergence:
-    def __init__(self, cookbook) -> None:
+    def __init__(self, cookbook, mutation_rate) -> None:
         """
 
         """
         self.average_scores = []
         self.cookbook = cookbook
         self.generation_scores = []
+        self.mutation_rate = mutation_rate
      
     def generation_data(self):
         
@@ -38,6 +39,7 @@ class Convergence:
         plt.ylabel('average score') 
             
         # giving a title to my graph 
-        plt.title('My first graph!') 
+        plt.title('Average Score per Generation (Mutation Rate: ' + \
+            str(self.mutation_rate) + ')') 
     
         plt.show() 
