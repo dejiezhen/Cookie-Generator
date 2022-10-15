@@ -143,7 +143,8 @@ class Recipes:
         Args:
             list_ingredients (arr): list of ingredients
         """
-        pantry_ingredient_set = set(self.pantry.pantry.keys()).difference(self.allergies)
+        pantry_ingredient_set = \
+            set(self.pantry.pantry.keys()).difference(self.allergies)
         ingredient_to_remove = random.choice(list_ingredients)
         ingredient_to_add = random.choice(pantry_ingredient_set)    
 
@@ -166,12 +167,14 @@ class Recipes:
         Args:
             None
         """
-        pantry_ingredient_set = set(self.pantry.pantry.keys()).difference(self.allergies) # keys = ingredients
+        # keys = ingredients
+        pantry_ingredient_set = \
+            set(self.pantry.pantry.keys()).difference(self.allergies) 
         # grab new ingredient from pantry
         ingredient_to_add = random.choice(pantry_ingredient_set)     
 
-        while len(pantry_ingredient_set) != len(self.ingredients_dictionary) and \
-            ingredient_to_add in self.ingredients_dictionary:  
+        while len(pantry_ingredient_set) != len(self.ingredients_dictionary) \
+            and ingredient_to_add in self.ingredients_dictionary:  
             ingredient_to_add = random.choice(pantry_ingredient_set)  
                         
         self.ingredients_dictionary[ingredient_to_add] = \
@@ -180,11 +183,14 @@ class Recipes:
 
     def add_flavor_ingredient(self):
 
-        base_ingredient = random.choice(list(self.ingredients_dictionary.keys()))
-        recipe_ingredient_set = set(self.ingredients_dictionary.keys()).difference(self.allergies)
+        base_ingredient = \
+            random.choice(list(self.ingredients_dictionary.keys()))
+        recipe_ingredient_set = \
+            set(self.ingredients_dictionary.keys()).difference(self.allergies)
         ingredient_list_set = set(INGREDIENT_LIST).difference(self.allergies)
         set_common = recipe_ingredient_set.intersection(ingredient_list_set)
         base_amount = 0
+        print(INGREDIENT_LIST)
 
         if len(set_common) == 0:
             # if they don't have anything in common 

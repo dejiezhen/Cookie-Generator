@@ -8,6 +8,7 @@ but I would strongly recommend considering how you might handle one or more
 large datasets as part of your design process.
 """
 
+from ast import In
 import numpy as np
 
 WORD_EMBED_VALS = np.load('ingred_word_emb.npy', allow_pickle=True).item()
@@ -61,6 +62,7 @@ pairings: * * *")
     request_pairing("chocolate", 0.1, "spice")"""
     request_pairing("green tea", 0.6, "fruit")
     request_pairing("chocolate", 0.45)
+    print(INGRED_CATEGORIES)
     # print(type(request_pairing))
     # print(request_pairing[0])
     # request_pairing("", 0.1)
