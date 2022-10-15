@@ -205,22 +205,6 @@ class Recipes:
             base_amount = self.ingredients_dictionary[base_ingredient]
 
         
-<<<<<<< HEAD
-        # maybe add float thing for amount
-        base_amount = self.ingredients_dictionary[base_ingredient[0]]
-        print("base amount")
-        print(base_amount)
-        pairings_dictionary = {}
-        threshold = 0.001       # could have dicts still that are zero size 
-
-        pairings_dictionary = pairing(base_ingredient, base_amount)
-        print(pairings_dictionary)
-        # error: unhashable 
-
-        #ingredients_list = list(pairings_dictionary.items())
-        #ingredient_to_add = random.choice(ingredients_list)
-        # print(ingredient_to_add)
-=======
         # potentially: make new list that has in common of both, pick random from there
         # print('base ingr')
         # print(base_ingredient)
@@ -236,20 +220,27 @@ class Recipes:
         
 
         pairings_dictionary = pairing(base_ingredient, threshold)
-        # sorted_pairings_dictionary = sorted(pairings.ingredients_dictionary.items(), \
-        #   key = lambda x: x[1], reverse=True)
-        print("list of cohesive options")
-        #find_top_three = Counter(pairings_dictionary)
-        #top_three = find_top_three.most_common(3)
+        #new_ingredient = max(pairings_dictionary, key=pairings_dictionary.get)
         
->>>>>>> dcf4e63f84e0c070315aee7f5cd3907e99e850bf
+        find_top_three = Counter(pairings_dictionary)
+        top_three = find_top_three.most_common(3)
+        print("list of 3 cohesive options")
+        print(top_three)
+        #new_ingredient = random.choice(list(top_three.keys()))
+        new_ingredient = random.choice(top_three)
+        print("New ingredient:")
+        print(new_ingredient)
+        self.ingredients_dictionary[new_ingredient] = base_amount
+        #it's taking in a key value pair into list-
+        #fix: only take in key
+        print(self.ingredients_dictionary)
+
 
         #new_ingredient = random.choice(list())
+        # sorted_pairings_dictionary = sorted(pairings.ingredients_dictionary.items(), \
+        #   key = lambda x: x[1], reverse=True)
 
-        new_ingredient = max(pairings_dictionary, key=pairings_dictionary.get)
- 
-        self.ingredients_dictionary[new_ingredient] = base_amount
-
+        
     def del_ingredient(self, list_ingredients):
         """
         Deletes a random ingredient from the recipe, but leaves fundamental 
