@@ -69,7 +69,7 @@ pairings: * * *")
     # print(type(request_pairing))
     # print(request_pairing[0])
     # request_pairing("", 0.1)
-    # print(INGRED_CATEGORIES)
+    print(INGRED_CATEGORIES)
     # print("SPACEEeeeeeeeeee----------------------------------")
     # print(INGREDIENT_LIST)
     # prints all items with categories from fun list

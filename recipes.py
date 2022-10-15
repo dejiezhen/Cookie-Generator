@@ -24,7 +24,8 @@ from flavor_pairing import *
 
 class Recipes:
 
-    def __init__(self, file, ingredients_dictionary, pantry, mutations_in_lineage) -> None:
+    def __init__(self, file, ingredients_dictionary, pantry, 
+        mutations_in_lineage) -> None:
         """
         Recipe class where recipe is primarily used and stored as a dictionary
         where the keys are the ingredients and the values are the corresponding 
@@ -40,8 +41,10 @@ class Recipes:
         self.ingredients_dictionary = ingredients_dictionary
         self.pantry = pantry
         self.mutations_in_lineage = mutations_in_lineage
-        self.allergies = set(['macadamia nut', 'walnut', 'pecan', 'cashew nut', \
-            'pistachio', 'almond', 'brazil nut'])
+        self.allergies = set(['macadamia nut', 'walnut', 'pecan', 
+        'cashew nut', 'pistachio', 'almond', 'brazil nut'])
+        self.essential_ingredients = set(['flour', 'sugar', 'egg', 'butter', 
+        'baking soda', 'baking powder'])
 
 
     def process_recipe(self):
@@ -97,15 +100,15 @@ class Recipes:
 
     def mutate(self):
         """
-        Uses random choice to determine which out of four mutation possibilities
-        to implement on the listed ingredients
+        Uses random choice to determine which out of four mutation 
+        possibilities to implement on the listed ingredients
 
         Args:
             None
         """
         mutation_options = ["add_flavor_ingredient"]
-        """mutation_options = ["change_amt", "change_ingredient", "add_ingredient", \
-             "add_flavor_ingredient", "del_ingredient"]"""
+        """mutation_options = ["change_amt", "change_ingredient", 
+        "add_ingredient", "add_flavor_ingredient", "del_ingredient"]"""
         mutation_type = random.choice(mutation_options)
         list_ingredients = list(self.ingredients_dictionary.keys())
         if mutation_type == "change_amt":
@@ -149,7 +152,7 @@ class Recipes:
         ingredient_to_add = random.choice(pantry_ingredient_set)    
 
         while len(pantry_ingredient_set) != len(list_ingredients) and \
-            ingredient_to_add in self.ingredients_dictionary: 
+            ingredient_to_add in self.ingredients_dictionary:
             ingredient_to_add = random.choice(pantry_ingredient_set)
 
         del self.ingredients_dictionary[ingredient_to_remove]
@@ -178,8 +181,7 @@ class Recipes:
             ingredient_to_add = random.choice(pantry_ingredient_set)  
                         
         self.ingredients_dictionary[ingredient_to_add] = \
-            self.pantry.pantry[ingredient_to_add]      
-            # use pantry amount 
+            self.pantry.pantry[ingredient_to_add]
 
     def add_flavor_ingredient(self):
 
@@ -237,10 +239,8 @@ class Recipes:
         Args:
             None
         """
-        essential_ingredients = ['flour', 'sugar', 'egg', 'butter', 
-        'baking soda', 'baking powder']
         deletable_list = [ingredient for ingredient in list_ingredients \
-                            if ingredient not in essential_ingredients]
+                            if ingredient not in self.essential_ingredients]
         ingredient_to_remove = random.choice(deletable_list)
         del self.ingredients_dictionary[ingredient_to_remove]
     
@@ -290,8 +290,9 @@ class Recipes:
             ingredients_list = set(self.ingredients_dictionary.keys())
             different_ingredients = ingredients_list.difference(inspiring_ingredients_list)
             score += len(different_ingredients)
-        
-        regularized_score = score / len(self.ingredients_dictionary)
+                    
+        regularized_score = \
+            score / (len(self.ingredients_dictionary) * len(inspiring_set))
         return regularized_score
 
     def evaluate_ingredient_cohesion(self):
@@ -299,35 +300,51 @@ class Recipes:
         need docstring 
         """
 
-        forbidden_ingredients = ["baking soda", "cream of tartar", 
-        "sugar", "flower", "shortening", "white chocolate", 
-        "light brown sugar", "dark brown sugar"]
-
         ingredients_to_see = list(self.ingredients_dictionary.keys())
         score = 0
-        threshold = 0.01      # check this !!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        threshold = 0.5
 
         for first_index in range(0, len(ingredients_to_see) - 1):
             for second_index in range(first_index + 1, len(ingredients_to_see)):
                 first_ingredient = ingredients_to_see[first_index]
                 second_ingredient = ingredients_to_see[second_index]                
-                # print(first_ingredient)
-                # print(second_ingredient)
-
                 if first_ingredient in INGREDIENT_LIST and \
                     second_ingredient in INGREDIENT_LIST:
-
                     cohesion = similarity(first_ingredient, second_ingredient)
                     if cohesion >= threshold: 
                         score += 1 
 
-                else: 
-                    pass
-
-        score = score/len(self.ingredients_dictionary)  # regularize 
+        score = score/len(self.ingredients_dictionary) #regularize 
         return score
 
-    def save_recipe_cookbook(self, generation, idx, curr_time):
+    def evaluate_essential_ingredients(self):  
+        """
+        Prioritize recipes that keep as many essential ingredients as possible
+        """
+        score = 0
+        for ingredient in self.ingredients_dictionary.keys(): 
+            if ingredient in self.essential_ingredients: 
+                score += 1
+
+        ratio_score = score / len(self.essential_ingredients)
+        return ratio_score
+
+    def calculate_diminishing_penalty(self, difference):
+        # multiply penalty by 0.9 for number of ingredients it's over by 
+        return 0.9 ** difference
+
+    def evaluate_ingredients_length(self):
+        """
+        penalize recipes with way too many ingredients 
+        """
+        max_ingredients_length, penalty = 15, 1
+        if len(self.ingredients_dictionary) > max_ingredients_length:
+            difference = \
+                len(self.ingredients_dictionary) - max_ingredients_length
+            penalty = self.calculate_diminishing_penalty(difference)
+        return penalty
+
+    def save_recipe_cookbook(self, generation, curr_time):
         """
         Saves recipe as .txt file
         
@@ -339,7 +356,6 @@ class Recipes:
         """
         recipe_name = self.name_recipe()
         file_name = 'gen'+ str(generation) + "_" + recipe_name + '.txt'
-        # print(recipe_name)
         with open("output/" + curr_time + "/" + file_name, 'w') as f:
             for ingredient, amount in self.ingredients_dictionary.items(): 
                 amount = round(amount, 2)
