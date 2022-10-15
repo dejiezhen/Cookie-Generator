@@ -53,7 +53,7 @@ def request_pairing(ingr, threshold, cat=None):
     else:
         print("\nWhat pairs well with " + ingr + "?")
         pairing(ingr, threshold)
-        
+
 
 def main():
     print("* * * Here are some examples of searching for Western flavor \
@@ -62,7 +62,10 @@ pairings: * * *")
     request_pairing("chocolate", 0.1, "spice")"""
     request_pairing("green tea", 0.6, "fruit")
     request_pairing("chocolate", 0.45)
-    print(INGRED_CATEGORIES)
+    #print(INGREDIENT_LIST)
+    print(list(INGRED_CATEGORIES.keys()))
+    #print([*set(list(INGRED_CATEGORIES.values()))])
+    
     # print(type(request_pairing))
     # print(request_pairing[0])
     # request_pairing("", 0.1)

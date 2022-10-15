@@ -183,14 +183,25 @@ class Recipes:
 
     def add_flavor_ingredient(self):
 
+        #print(list(INGRED_CATEGORIES.values()))
+        ingredient_categories = [*set(list(INGRED_CATEGORIES.values()))]
+        #need to get specific category of new_ingredient
+        print(ingredient_categories)
+        #categories_dict = {key: None for key in ingredient_categories}
+        #categories_dict['fish/seafood'] = 0.5
+        #print(categories_dict)
+
+        # step 1: pick base ing that new ing will pair with
         base_ingredient = \
             random.choice(list(self.ingredients_dictionary.keys()))
         recipe_ingredient_set = \
             set(self.ingredients_dictionary.keys()).difference(self.allergies)
+            #account for allergies
+        #numpy_ingredient_list = list(INGRED_CATEGORIES.keys())
         ingredient_list_set = set(INGREDIENT_LIST).difference(self.allergies)
         set_common = recipe_ingredient_set.intersection(ingredient_list_set)
         base_amount = 0
-        print(INGREDIENT_LIST)
+        #print(INGREDIENT_LIST)
 
         if len(set_common) == 0:
             # if they don't have anything in common 
