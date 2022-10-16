@@ -188,7 +188,7 @@ class Recipes:
         #print(list(INGRED_CATEGORIES.values()))
         ingredient_categories = [*set(list(INGRED_CATEGORIES.values()))]
         #need to get specific category of new_ingredient
-        print(ingredient_categories)
+        #print(ingredient_categories)
         #categories_dict = {key: None for key in ingredient_categories}
         #categories_dict['fish/seafood'] = 0.5
         #print(categories_dict)
