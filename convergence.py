@@ -18,11 +18,7 @@ class Convergence:
         average_scores = self.cookbook.average_scores
         print(len(average_scores))
         for i in range(0, len(average_scores), 12):
-            generation_score_sum = 0
-            for j in range(0, 12):
-                generation_score_sum += average_scores[i+j]
-            generation_average = generation_score_sum / 12
-
+            generation_average = sum(average_scores[i:i+12]) / 12
             print("gen avg: " + str(generation_average))
             self.generation_scores.append(generation_average)
 

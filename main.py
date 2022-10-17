@@ -52,6 +52,10 @@ recipes to mutate (0.0 to 1.0, inclusive)?")
     
     return float(mutation_rate)
 
+def generate_statistic_plot():
+    generate_plot = input('Would you like to generate a statistic plot?(y/n)')
+    if generate_plot.lower() == 'y':
+        return True
 
 def main():
     """
@@ -65,10 +69,15 @@ def main():
     input_path = './input'
     dir_list = os.listdir(input_path)
     initial_cookbook = Cookbook(dir_list, generation_val, mutation_rate)
-    initial_cookbook.breed_generations()
-    convergence_instance = Convergence(initial_cookbook, mutation_rate)
-    convergence_instance.generation_data()
-    convergence_instance.plotting()
+    if generate_statistic_plot():
+        initial_cookbook.breed_generations()
+        convergence_instance = Convergence(initial_cookbook)
+        convergence_instance.generation_data()
+        convergence_instance.plotting()
+    else:
+        initial_cookbook.breed_generations()
+
+
 
 if __name__ == '__main__':
     main()

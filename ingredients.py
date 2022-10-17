@@ -19,6 +19,8 @@ class Ingredients:
         self.pantry = {}
 
     def get_category_amount(category):
+        #add hard coded values into dictionary with the category name as key and amount as value
+        
         pass;
 
     def update_pantry(self, recipe):
