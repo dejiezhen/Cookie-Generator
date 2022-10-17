@@ -2,7 +2,7 @@
 Sofía Hamby, Khalil Jackson, Bjorn Ludwig, and Dejie Zhen
 CSCI 3725
 PQ2: Generation Day
-09/29/22
+10/17/22
 
 The Cookbook.py file houses the Cookbook class, which is called by the main 
 function and initialized by the file list, the targeted generation number, and 
