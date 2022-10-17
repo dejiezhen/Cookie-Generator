@@ -9,6 +9,8 @@ original input files of ingedients and creates new files of recipes. It houses
 the update_pantry function that will tweak the ingreidents and/or their 
 averages in the pantry.
 """
+import random
+from flavor_pairing import INGRED_CATEGORIES
 
 class Ingredients:
     def __init__(self):  
@@ -18,15 +20,32 @@ class Ingredients:
         """      
         self.pantry = {}
 
-    def get_category_amount(category):
-        #return category of new ingredient
+    def get_category_amount(ingredient):
+        pass
+
         #hard coded dictionary of categories and values
-        category_dict = {"dairy": 16, "plant derivative": 15, 
-        "animal product": 10, "nut/seed/pulse": 10, "spice": 2, "herb": 2, 
-        "fruit": 1.5, "cereal": 1, "plant": 1, "flower": 0.5, "vegetable": 0.5,
-         "crop": 0.5, "seafood": 0.5, "meat": 0.5}
-        
-        pass;
+        category_dict = {"dairy": 16, 
+                        "plant derivative": 15, 
+                        "animal product": 10, 
+                        "nut/seed/pulse": 10, 
+                        "spice": 2, 
+                        "herb": 2, 
+                        "fruit": 1.5, 
+                        "cereal": 1, 
+                        "plant": 1, 
+                        "flower": 0.5,
+                        "vegetable": 0.5,
+                        "crop": 0.5, 
+                        "seafood": 0.5, 
+                        "meat": 0.5
+                        }
+       
+        #gets the category of the ingredient in the parameter
+        ingredient_category = INGRED_CATEGORIES.get(ingredient)
+
+        #returns the hard coded amount for that category
+        return(category_dict.get(ingredient_category))
+       
 
     def update_pantry(self, recipe):
         """

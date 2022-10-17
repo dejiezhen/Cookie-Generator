@@ -302,7 +302,7 @@ class Recipes:
 
         ingredients_to_see = list(self.ingredients_dictionary.keys())
         score = 0
-        threshold = 0.5
+        threshold = 0.4
 
         for first_index in range(0, len(ingredients_to_see) - 1):
             for second_index in range(first_index + 1, len(ingredients_to_see)):

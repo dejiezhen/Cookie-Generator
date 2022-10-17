@@ -71,7 +71,7 @@ def main():
     initial_cookbook = Cookbook(dir_list, generation_val, mutation_rate)
     if generate_statistic_plot():
         initial_cookbook.breed_generations()
-        convergence_instance = Convergence(initial_cookbook)
+        convergence_instance = Convergence(initial_cookbook, mutation_rate)
         convergence_instance.generation_data()
         convergence_instance.plotting()
     else:
