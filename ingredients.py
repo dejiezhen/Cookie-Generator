@@ -19,7 +19,12 @@ class Ingredients:
         self.pantry = {}
 
     def get_category_amount(category):
-        #add hard coded values into dictionary with the category name as key and amount as value
+        #return category of new ingredient
+        #hard coded dictionary of categories and values
+        category_dict = {"dairy": 16, "plant derivative": 15, 
+        "animal product": 10, "nut/seed/pulse": 10, "spice": 2, "herb": 2, 
+        "fruit": 1.5, "cereal": 1, "plant": 1, "flower": 0.5, "vegetable": 0.5,
+         "crop": 0.5, "seafood": 0.5, "meat": 0.5}
         
         pass;
 

@@ -8,7 +8,6 @@ class Convergence:
         """
 
         """
-        self.average_scores = []
         self.cookbook = cookbook
         self.generation_scores = []
      

@@ -63,6 +63,7 @@ pairings: * * *")
     request_pairing("green tea", 0.6, "fruit")
     request_pairing("chocolate", 0.45)
     #print(INGREDIENT_LIST)
+    #print(INGRED_CATEGORIES)
     #print(list(INGRED_CATEGORIES.keys()))
     #print([*set(list(INGRED_CATEGORIES.values()))])
     
