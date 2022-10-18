@@ -106,9 +106,9 @@ class Recipes:
         Args:
             None
         """
-        mutation_options = ["add_flavor_ingredient"]
-        """mutation_options = ["change_amt", "change_ingredient", 
-        "add_ingredient", "add_flavor_ingredient", "del_ingredient"]"""
+        # mutation_options = ["add_flavor_ingredient"]
+        mutation_options = ["change_amt", "change_ingredient", 
+        "add_ingredient", "add_flavor_ingredient", "del_ingredient"]
         mutation_type = random.choice(mutation_options)
         list_ingredients = list(self.ingredients_dictionary.keys())
         if mutation_type == "change_amt":
@@ -149,11 +149,11 @@ class Recipes:
         pantry_ingredient_set = \
             set(self.pantry.pantry.keys()).difference(self.allergies)
         ingredient_to_remove = random.choice(list_ingredients)
-        ingredient_to_add = random.choice(pantry_ingredient_set)    
+        ingredient_to_add = random.choice(list(pantry_ingredient_set))  
 
         while len(pantry_ingredient_set) != len(list_ingredients) and \
             ingredient_to_add in self.ingredients_dictionary:
-            ingredient_to_add = random.choice(pantry_ingredient_set)
+            ingredient_to_add = random.choice(list(pantry_ingredient_set))
 
         del self.ingredients_dictionary[ingredient_to_remove]
         self.ingredients_dictionary[ingredient_to_add] = \
@@ -174,11 +174,11 @@ class Recipes:
         pantry_ingredient_set = \
             set(self.pantry.pantry.keys()).difference(self.allergies) 
         # grab new ingredient from pantry
-        ingredient_to_add = random.choice(pantry_ingredient_set)     
+        ingredient_to_add = random.choice(list(pantry_ingredient_set))
 
         while len(pantry_ingredient_set) != len(self.ingredients_dictionary) \
             and ingredient_to_add in self.ingredients_dictionary:  
-            ingredient_to_add = random.choice(pantry_ingredient_set)  
+            ingredient_to_add = random.choice(list(pantry_ingredient_set))  
                         
         self.ingredients_dictionary[ingredient_to_add] = \
             self.pantry.pantry[ingredient_to_add]
@@ -200,6 +200,7 @@ class Recipes:
 
         if len(set_common) == 0:
             # if they don't have anything in common, will not happen
+            #  might not get executed at all
             choices = ingredient_list_set# .difference(self.allergies)
             base_ingredient = random.choice(list(choices))
             base_amount = 0.55
@@ -220,10 +221,12 @@ class Recipes:
         top_three = find_top_three.most_common(3)
         random_top_three = dict(top_three)  
         new_ingredient = random.choice(list(random_top_three.keys()))
-        new_amount = self.pantry.get_category_amount(new_ingredient)
-        # base to new amount
-        print(new_amount)
-        self.ingredients_dictionary[new_ingredient] = new_amount
+        if new_ingredient in self.pantry.pantry:
+            new_amount = self.pantry.pantry[new_ingredient]
+            self.ingredients_dictionary[new_ingredient] = new_amount
+        else:
+            new_amount = self.pantry.get_category_amount(new_ingredient)
+            self.ingredients_dictionary[new_ingredient] = new_amount
    
     def del_ingredient(self, list_ingredients):
         """

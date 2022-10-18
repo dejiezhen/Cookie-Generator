@@ -27,7 +27,7 @@ class Convergence:
             print("gen avg: " + str(generation_average))
             self.generation_scores.append(generation_average)
 
-        print(self.generation_scores)
+        # print(self.generation_scores)
         print(len(self.generation_scores))
 
     def plotting(self):

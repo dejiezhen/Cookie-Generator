@@ -23,13 +23,13 @@ class Ingredients:
 
     def get_category_amount(self, ingredient):
         category_inspiring_set = {
-                                "dairy": 16, 
-                                "plant derivative": 15, 
-                                "animal product": 10, 
+                                "dairy": 8, 
+                                "plant derivative": 8, 
+                                "animal product": 8, 
                                 "nut/seed/pulse": 10, 
                                 "spice": 2, 
                                 "herb": 2, 
-                                "fruit": 1.5, 
+                                "fruit": 4, 
                                 "cereal": 1, 
                                 "plant": 1, 
                                 "flower": 0.5, 
@@ -96,8 +96,16 @@ class Ingredients:
     def word_match(self, curr_ingredient):
         category = None
         for category_ingredient in list(INGRED_CATEGORIES.keys()):
-            common_letters = ''.join(set(curr_ingredient).intersection(category_ingredient))
-            if len(common_letters)/max(len(curr_ingredient), len(category_ingredient)) >= .75:
+            min_ingredient = min(len(curr_ingredient), len(category_ingredient))
+            max_ingredient = max(len(curr_ingredient), len(category_ingredient))
+            counter  = 0
+            for i in range(min_ingredient):
+                if curr_ingredient[i] == category_ingredient[i]:
+                    counter += 1
+            if (counter/max_ingredient)>= .75:
+                print(counter)
+                print(curr_ingredient, category_ingredient)
+
                 category = \
                     INGRED_CATEGORIES[curr_ingredient] if curr_ingredient in INGRED_CATEGORIES else INGRED_CATEGORIES[category_ingredient]
         return category
@@ -116,11 +124,12 @@ class Ingredients:
             ingredient_category = INGRED_CATEGORIES.get(ingredient, None)
             if not ingredient_category:
                 initial_category_match = self.category_match(ingredient)
-                word_match_category = self.word_match(ingredient)
+                # word_match_category = self.word_match(ingredient)
                 if initial_category_match:
                     self.update_category_dict(initial_category_match, amount)
-                elif word_match_category:
-                    self.update_category_dict(word_match_category, amount)
+                # elif word_match_category:
+                #     print(word_match_category, ingredient)
+                #     self.update_category_dict(word_match_category, amount)
                 else:
                     self.update_category_dict('Other', .5)
             else :
