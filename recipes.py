@@ -206,7 +206,7 @@ class Recipes:
         #print(INGREDIENT_LIST)
 
         if len(set_common) == 0:
-            # if they don't have anything in common 
+            # if they don't have anything in common, will not happen
             choices = ingredient_list_set# .difference(self.allergies)
             base_ingredient = random.choice(list(choices))
             base_amount = 0.55

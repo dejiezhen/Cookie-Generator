@@ -54,7 +54,7 @@ recipes to mutate (0.0 to 1.0, inclusive)?")
 
 def generate_statistic_plot():
     generate_plot = input('Would you like to generate a statistic plot?(y/n)')
-    while generate_plot.lower() != 'y' or generate_plot.lower() != 'n':
+    while generate_plot.lower() != 'y' and generate_plot.lower() != 'n':
         generate_plot = input('Would you like to generate a statistic plot?(y/n)')
     if generate_plot.lower() == 'y':
         return True
