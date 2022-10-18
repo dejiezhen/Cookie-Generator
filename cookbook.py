@@ -175,7 +175,7 @@ class Cookbook:
             new_cookbook: the cookbook the recipe files will be made from
         """
         for recipe in new_cookbook:
-            recipe.save_recipe_cookbook(self.curr_generation, self.curr_time)
+            recipe.save_recipe_cookbook(self.curr_generation, self.curr_time, self.target_generation)
     
     def get_pivot(self, pivot_array, i):
         first_pivot = pivot_array[i] 
@@ -295,5 +295,7 @@ class Cookbook:
         while self.curr_generation <= self.target_generation:
             self.merge()
             self.curr_generation += 1
+        
+       
         # print(self.pantry.pantry)
         # print(self.pantry.category_dictionary)

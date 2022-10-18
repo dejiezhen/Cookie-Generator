@@ -105,9 +105,6 @@ class Ingredients:
                 if curr_ingredient[i] == category_ingredient[i]:
                     counter += 1
             if (counter/max_ingredient)>= .75:
-                print(counter)
-                print(curr_ingredient, category_ingredient)
-
                 category = \
                     INGRED_CATEGORIES[curr_ingredient] if curr_ingredient in INGRED_CATEGORIES else INGRED_CATEGORIES[category_ingredient]
         return category
@@ -138,6 +135,5 @@ class Ingredients:
 
 
     def update_pantry_categories(self, recipe):
-        # print(self.category_dictionary)
         self.update_pantry(recipe)
         self.update_category_amount(recipe)

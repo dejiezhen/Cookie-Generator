@@ -116,11 +116,13 @@ class Recipes:
         elif mutation_type == "change_ingredient":
             self.change_ingredient(list_ingredients)
         elif mutation_type == "add_flavor_ingredient":
-            add_chance = random.uniform(0,1)
-            if add_chance < .75:
-                self.add_flavor_ingredient()
-            else:
-                self.add_pantry_ingredient()
+            self.add_flavor_ingredient()
+
+            # add_chance = random.uniform(0,1)
+            # if add_chance < .75:
+            #     self.add_flavor_ingredient()
+            # else:
+            #     self.add_pantry_ingredient()
         else:                                                                     
             self.del_ingredient(list_ingredients)
         
@@ -199,18 +201,17 @@ class Recipes:
         set_common = recipe_ingredient_set.intersection(ingredient_list_set)
         # base_amount = 0
         #print(INGREDIENT_LIST)
-        # if len(set_common) == 0:
-        #     # if they don't have anything in common, will not happen
-        #     #  might not get executed at all
-        #     choices = ingredient_list_set# .difference(self.allergies)
-        #     base_ingredient = random.choice(list(choices))
-        #     base_amount = 0.55
-        #     print('hit')
-        # else:
-        #     if add_chance < .75:
-        choices = recipe_ingredient_set.intersection(ingredient_list_set)
-        base_ingredient = random.choice(list(choices))
-    
+        if len(set_common) == 0:
+            # if they don't have anything in common, will not happen
+            #  might not get executed at all
+            choices = ingredient_list_set
+            base_ingredient = random.choice(list(choices))
+            base_amount = 0.55
+            print('hit')
+        else:
+            choices = recipe_ingredient_set.intersection(ingredient_list_set)
+            base_ingredient = random.choice(list(choices))
+        
                 # base_amount = self.ingredients_dictionary[base_ingredient]
 
         pairings_dictionary = {}
@@ -224,12 +225,12 @@ class Recipes:
         top_three = find_top_three.most_common(3)
         random_top_three = dict(top_three)  
         new_ingredient = random.choice(list(random_top_three.keys()))
-        if new_ingredient in self.pantry.pantry:
-            new_amount = self.pantry.pantry[new_ingredient]
-            self.ingredients_dictionary[new_ingredient] = new_amount
-        else:
-            new_amount = self.pantry.get_category_amount(new_ingredient)
-            self.ingredients_dictionary[new_ingredient] = new_amount
+        # if new_ingredient in self.pantry.pantry:
+        #     new_amount = self.pantry.pantry[new_ingredient]
+        #     self.ingredients_dictionary[new_ingredient] = new_amount
+        # else:
+        new_amount = self.pantry.get_category_amount(new_ingredient)
+        self.ingredients_dictionary[new_ingredient] = new_amount
    
     def del_ingredient(self, list_ingredients):
         """
@@ -241,8 +242,9 @@ class Recipes:
         """
         deletable_list = [ingredient for ingredient in list_ingredients \
                             if ingredient not in self.essential_ingredients]
-        ingredient_to_remove = random.choice(deletable_list)
-        del self.ingredients_dictionary[ingredient_to_remove]
+        if len(deletable_list) > 0:
+            ingredient_to_remove = random.choice(deletable_list)
+            del self.ingredients_dictionary[ingredient_to_remove]
     
     def get_name(self, sorted_recipe):
         random_idx = random.randint(0, len(sorted_recipe)-1)
@@ -277,7 +279,7 @@ class Recipes:
 
         cute_start_names = ["Sweet ", "Zesty ", "Soft ", "Hot ", "Wild ", "Sexy ", "Lively ", "Internet Worthy ", "Violently Delicious "]
 
-        cute_end_names = [" Mix", " Taste Explosion", " Concoction", " Blend", " Batch"]
+        cute_end_names = [" mix", " taste explosion", " concoction", " blend", " batch"]
             
         recipe_name = (random.choice(cute_start_names) + first_random_name + " and " + \
             second_random_name + (random.choice(cute_end_names))).replace(' ', '_')
@@ -350,7 +352,7 @@ class Recipes:
             penalty = self.calculate_diminishing_penalty(difference)
         return penalty
 
-    def save_recipe_cookbook(self, generation, curr_time):
+    def save_recipe_cookbook(self, generation, curr_time, target_generation):
         """
         Saves recipe as .txt file
         
@@ -359,11 +361,14 @@ class Recipes:
             idx (int): number corresponding to the given recipe in the \
                 generation 
             curr_time (str): current time
-        """
+        """            
         recipe_name = self.name_recipe()
         file_name = 'gen'+ str(generation) + "_" + recipe_name + '.txt'
         with open("output/" + curr_time + "/" + file_name, 'w') as f:
             for ingredient, amount in self.ingredients_dictionary.items(): 
                 amount = round(amount, 2)
                 f.write(str(amount) + " oz " + str(ingredient) + "\n")
+        
+        if generation == target_generation:
+            print(file_name)
 
