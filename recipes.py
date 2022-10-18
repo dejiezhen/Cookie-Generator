@@ -106,15 +106,15 @@ class Recipes:
         Args:
             None
         """
-        # mutation_options = ["add_flavor_ingredient"]
-        mutation_options = ["change_amt", "change_ingredient", 
-        "add_ingredient", "add_flavor_ingredient", "del_ingredient"]
+        # mutation_options = ["add_flavor_ingredient,  "change_ingredient""]
+        mutation_options = ["change_amt", 
+        "add_flavor_ingredient", "del_ingredient"]
         mutation_type = random.choice(mutation_options)
         list_ingredients = list(self.ingredients_dictionary.keys())
         if mutation_type == "change_amt":
             self.change_amt(list_ingredients)
-        elif mutation_type == "change_ingredient":
-            self.change_ingredient(list_ingredients)
+        # elif mutation_type == "change_ingredient":
+        #     self.change_ingredient(list_ingredients)
         elif mutation_type == "add_flavor_ingredient":
             self.add_flavor_ingredient()
 
@@ -225,11 +225,11 @@ class Recipes:
         top_three = find_top_three.most_common(3)
         random_top_three = dict(top_three)  
         new_ingredient = random.choice(list(random_top_three.keys()))
-        # if new_ingredient in self.pantry.pantry:
-        #     new_amount = self.pantry.pantry[new_ingredient]
-        #     self.ingredients_dictionary[new_ingredient] = new_amount
-        # else:
-        new_amount = self.pantry.get_category_amount(new_ingredient)
+        if new_ingredient in self.pantry.pantry:
+            new_amount = self.pantry.pantry[new_ingredient]
+            self.ingredients_dictionary[new_ingredient] = new_amount
+        else:
+            new_amount = self.pantry.get_category_amount(new_ingredient)
         self.ingredients_dictionary[new_ingredient] = new_amount
    
     def del_ingredient(self, list_ingredients):
@@ -335,7 +335,7 @@ class Recipes:
                 score += 1
 
         ratio_score = score / len(self.essential_ingredients)
-        return ratio_score
+        return ratio_score * 2
 
     def calculate_diminishing_penalty(self, difference):
         # multiply penalty by 0.9 for number of ingredients it's over by 
