@@ -115,10 +115,12 @@ class Recipes:
             self.change_amt(list_ingredients)
         elif mutation_type == "change_ingredient":
             self.change_ingredient(list_ingredients)
-        elif mutation_type == "add_ingredient":
-            self.add_ingredient()
         elif mutation_type == "add_flavor_ingredient":
-            self.add_flavor_ingredient()
+            add_chance = random.uniform(0,1)
+            if add_chance < .75:
+                self.add_flavor_ingredient()
+            else:
+                self.add_pantry_ingredient()
         else:                                                                     
             self.del_ingredient(list_ingredients)
         
@@ -161,7 +163,7 @@ class Recipes:
 
         # pass        # addition_options = ["add_ing"re"dient, add_flavored_ing"redient]
 
-    def add_ingredient(self):
+    def add_pantry_ingredient(self):
         """
         Add a new ingredient to the recipe from the pantry (not already in the 
         recipe)
@@ -195,20 +197,21 @@ class Recipes:
             set(self.ingredients_dictionary.keys()).difference(self.allergies)
         ingredient_list_set = set(INGREDIENT_LIST).difference(self.allergies)
         set_common = recipe_ingredient_set.intersection(ingredient_list_set)
-        base_amount = 0
+        # base_amount = 0
         #print(INGREDIENT_LIST)
-
-        if len(set_common) == 0:
-            # if they don't have anything in common, will not happen
-            #  might not get executed at all
-            choices = ingredient_list_set# .difference(self.allergies)
-            base_ingredient = random.choice(list(choices))
-            base_amount = 0.55
-        else:
-            # if they do have in commom
-            choices = recipe_ingredient_set.intersection(ingredient_list_set)
-            base_ingredient = random.choice(list(choices))
-            # base_amount = self.ingredients_dictionary[base_ingredient]
+        # if len(set_common) == 0:
+        #     # if they don't have anything in common, will not happen
+        #     #  might not get executed at all
+        #     choices = ingredient_list_set# .difference(self.allergies)
+        #     base_ingredient = random.choice(list(choices))
+        #     base_amount = 0.55
+        #     print('hit')
+        # else:
+        #     if add_chance < .75:
+        choices = recipe_ingredient_set.intersection(ingredient_list_set)
+        base_ingredient = random.choice(list(choices))
+    
+                # base_amount = self.ingredients_dictionary[base_ingredient]
 
         pairings_dictionary = {}
         threshold = 0.001       # could have dicts still that are zero size 
@@ -277,7 +280,7 @@ class Recipes:
         cute_end_names = [" Mix", " Taste Explosion", " Concoction", " Blend", " Batch"]
             
         recipe_name = (random.choice(cute_start_names) + first_random_name + " and " + \
-            (random.choice(cute_end_names)) + second_random_name).replace(' ', '_')
+            second_random_name + (random.choice(cute_end_names))).replace(' ', '_')
              
         return recipe_name
 

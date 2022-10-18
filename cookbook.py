@@ -214,16 +214,6 @@ class Cookbook:
         second_baby_dict = self.convert_to_dict(second_baby_arr)
         return first_baby_dict, second_baby_dict
 
-    # def clean_recipe(self, new_cookbook):
-    #     for recipe in new_cookbook:
-    #         print(recipe.ingredients_dictionary)
-    #         recipe_key = recipe.ingredients_dictionary.keys()
-    #         for ingredient in recipe_key:
-    #             if recipe.ingredients_dictionary[ingredient] < 0.01:
-    #                 print(ingredient, recipe.ingredients_dictionary[ingredient])
-    #                 del recipe.ingredients_dictionary[ingredient]
-
-
     def merge(self):
         """
         Merges parent recipes by their pivot arrays to create two new recipes, 
@@ -282,7 +272,6 @@ class Cookbook:
         #   best of the baby list to make new cookbook 
         new_cookbook = self.cookbook[:len(self.cookbook)//2] + \
             new_baby_list[:len(new_baby_list)//2] 
-        # self.clean_recipe(new_cookbook) 
         new_cookbook = self.rank(new_cookbook)
         self.create_recipe_files(new_cookbook)
         self.cookbook = new_cookbook
