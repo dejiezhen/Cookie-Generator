@@ -186,20 +186,13 @@ class Recipes:
     def add_flavor_ingredient(self):
 
         #print(list(INGRED_CATEGORIES.values()))
-        ingredient_categories = [*set(list(INGRED_CATEGORIES.values()))]
-        #need to get specific category of new_ingredient
-        #print(ingredient_categories)
-        #categories_dict = {key: None for key in ingredient_categories}
-        #categories_dict['fish/seafood'] = 0.5
-        #print(categories_dict)
+        #ingredient_categories = [*set(list(INGRED_CATEGORIES.values()))]
 
         # step 1: pick base ing that new ing will pair with
         base_ingredient = \
             random.choice(list(self.ingredients_dictionary.keys()))
         recipe_ingredient_set = \
             set(self.ingredients_dictionary.keys()).difference(self.allergies)
-            #account for allergies
-        #numpy_ingredient_list = list(INGRED_CATEGORIES.keys())
         ingredient_list_set = set(INGREDIENT_LIST).difference(self.allergies)
         set_common = recipe_ingredient_set.intersection(ingredient_list_set)
         base_amount = 0
@@ -214,7 +207,7 @@ class Recipes:
             # if they do have in commom
             choices = recipe_ingredient_set.intersection(ingredient_list_set)
             base_ingredient = random.choice(list(choices))
-            base_amount = self.ingredients_dictionary[base_ingredient]
+            # base_amount = self.ingredients_dictionary[base_ingredient]
 
         pairings_dictionary = {}
         threshold = 0.001       # could have dicts still that are zero size 
@@ -227,9 +220,10 @@ class Recipes:
         top_three = find_top_three.most_common(3)
         random_top_three = dict(top_three)  
         new_ingredient = random.choice(list(random_top_three.keys()))
-
-        #add new, fun ingredient to recipe
-        self.ingredients_dictionary[new_ingredient] = base_amount
+        new_amount = self.pantry.get_category_amount(new_ingredient)
+        # base to new amount
+        print(new_amount)
+        self.ingredients_dictionary[new_ingredient] = new_amount
    
     def del_ingredient(self, list_ingredients):
         """
@@ -274,9 +268,13 @@ class Recipes:
 
         while first_random_name == second_random_name and len(sorted_recipe) > 1:
             second_random_name = self.get_name(sorted_recipe)
+
+        cute_start_names = ["Sweet ", "Zesty ", "Soft ", "Hot ", "Wild ", "Sexy ", "Lively ", "Internet Worthy ", "Violently Delicious "]
+
+        cute_end_names = [" Mix", " Taste Explosion", " Concoction", " Blend", " Batch"]
             
-        recipe_name = (first_random_name + " and " + \
-             second_random_name).replace(' ', '_')
+        recipe_name = (random.choice(cute_start_names) + first_random_name + " and " + \
+            (random.choice(cute_end_names)) + second_random_name).replace(' ', '_')
              
         return recipe_name
 
@@ -313,6 +311,8 @@ class Recipes:
                     cohesion = similarity(first_ingredient, second_ingredient)
                     if cohesion >= threshold: 
                         score += 1 
+                        #list(INGRED_CATEGORIES.keys())
+                        #replaced if x in IN_LIST
 
         score = score/len(self.ingredients_dictionary) #regularize 
         return score
@@ -337,7 +337,7 @@ class Recipes:
         """
         penalize recipes with way too many ingredients 
         """
-        max_ingredients_length, penalty = 15, 1
+        max_ingredients_length, penalty = 14, 1
         if len(self.ingredients_dictionary) > max_ingredients_length:
             difference = \
                 len(self.ingredients_dictionary) - max_ingredients_length

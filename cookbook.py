@@ -131,7 +131,7 @@ class Cookbook:
         for recipe in self.cookbook:
             recipe.process_recipe()
             recipe.normalize_recipe()
-            self.pantry.update_pantry(recipe.ingredients_dictionary)
+            self.pantry.update_pantry_categories(recipe.ingredients_dictionary)
         self.inspiring_set = copy.deepcopy(self.cookbook)
         self.cookbook = self.rank_initial_cohesion(self.cookbook)
 
@@ -260,8 +260,9 @@ class Cookbook:
             first_baby.normalize_recipe()
             second_baby.normalize_recipe()
 
-            self.pantry.update_pantry(first_baby.ingredients_dictionary)
-            self.pantry.update_pantry(second_baby.ingredients_dictionary)
+            self.pantry.update_pantry_categories(first_baby.ingredients_dictionary)
+            self.pantry.update_pantry_categories(second_baby.ingredients_dictionary)
+        
 
             baby_list.append(first_baby)
             baby_list.append(second_baby)
