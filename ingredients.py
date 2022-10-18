@@ -96,6 +96,8 @@ class Ingredients:
     def word_match(self, curr_ingredient):
         category = None
         for category_ingredient in list(INGRED_CATEGORIES.keys()):
+            if category_ingredient[0] != curr_ingredient[0]:
+                continue
             min_ingredient = min(len(curr_ingredient), len(category_ingredient))
             max_ingredient = max(len(curr_ingredient), len(category_ingredient))
             counter  = 0
@@ -124,12 +126,11 @@ class Ingredients:
             ingredient_category = INGRED_CATEGORIES.get(ingredient, None)
             if not ingredient_category:
                 initial_category_match = self.category_match(ingredient)
-                # word_match_category = self.word_match(ingredient)
+                word_match_category = self.word_match(ingredient)
                 if initial_category_match:
                     self.update_category_dict(initial_category_match, amount)
-                # elif word_match_category:
-                #     print(word_match_category, ingredient)
-                #     self.update_category_dict(word_match_category, amount)
+                elif word_match_category:
+                    self.update_category_dict(word_match_category, amount)
                 else:
                     self.update_category_dict('Other', .5)
             else :
