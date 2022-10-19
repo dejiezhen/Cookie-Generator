@@ -297,5 +297,5 @@ class Cookbook:
             self.curr_generation += 1
         
        
-        # print(self.pantry.pantry)
-        # print(self.pantry.category_dictionary)
+        print(self.pantry.pantry)
+        print(self.pantry.category_dictionary)

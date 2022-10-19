@@ -152,8 +152,8 @@ class Recipes:
         """
         pantry_ingredient_set = \
             set(self.pantry.pantry.keys()).difference(self.allergies)
-        ingredient_to_remove = random.choice(list_ingredients)
-        ingredient_to_add = random.choice(list(pantry_ingredient_set))  
+        ingredient_to_remove = random.choice(list_ingredients).differece(self.essential_ingredients)
+        ingredient_to_add = random.choice(list(pantry_ingredient_set.differece(self.essential_ingredients)))
 
         while len(pantry_ingredient_set) != len(list_ingredients) and \
             ingredient_to_add in self.ingredients_dictionary:

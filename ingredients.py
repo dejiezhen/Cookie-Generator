@@ -98,13 +98,13 @@ class Ingredients:
         for category_ingredient in list(INGRED_CATEGORIES.keys()):
             if category_ingredient[0] != curr_ingredient[0]:
                 continue
-            min_ingredient = min(len(curr_ingredient), len(category_ingredient))
-            max_ingredient = max(len(curr_ingredient), len(category_ingredient))
+            min_len_ingredient = min(len(curr_ingredient), len(category_ingredient))
+            max_len_ingredient = max(len(curr_ingredient), len(category_ingredient))
             counter  = 0
-            for i in range(min_ingredient):
+            for i in range(min_len_ingredient):
                 if curr_ingredient[i] == category_ingredient[i]:
                     counter += 1
-            if (counter/max_ingredient)>= .75:
+            if (counter/max_len_ingredient)>= .75:
                 category = \
                     INGRED_CATEGORIES[curr_ingredient] if curr_ingredient in INGRED_CATEGORIES else INGRED_CATEGORIES[category_ingredient]
         return category
