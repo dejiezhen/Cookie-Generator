@@ -44,8 +44,9 @@ class Convergence:
         # plt.plot(list(range(1, len(self.generation_scores)+1)), \
         #     self.convergence_value())
 
-        plt.hlines(self.convergence_value(), 1, \
-            len(self.generation_scores), color="red")
+        if len(self.generation_scores) >= 300: 
+            plt.hlines(self.convergence_value(), 1, \
+                len(self.generation_scores), color="red")
 
         # naming the x axis 
         plt.xlabel('generation') 
@@ -60,7 +61,7 @@ class Convergence:
     def convergence_value(self):
         """
         Take the average of the converged second half of score data 
-        ** ASSUMING WE HAVE OVER 200 GENERATIONS**
+        ** ASSUMING WE HAVE OVER 300 GENERATIONS**
         """
 
         sum_second_half = \
