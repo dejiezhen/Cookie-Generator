@@ -334,8 +334,9 @@ class Recipes:
             if ingredient in self.essential_ingredients: 
                 score += 1
 
-        ratio_score = score / len(self.essential_ingredients)
-        return ratio_score * 2
+        # square the score ratio to further penalize too few essential ingredients 
+        ratio_score = (score**2) / (len(self.essential_ingredients)**2)
+        return ratio_score
 
     def calculate_diminishing_penalty(self, difference):
         # multiply penalty by 0.9 for number of ingredients it's over by 
