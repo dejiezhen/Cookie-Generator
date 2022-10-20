@@ -108,21 +108,19 @@ class Recipes:
         """
         # mutation_options = ["add_flavor_ingredient,  "change_ingredient""]
         mutation_options = ["change_amt", 
-        "add_flavor_ingredient", "del_ingredient"]
+        "add_flavor_ingredient", "del_ingredient", "change_ingredient"]
         mutation_type = random.choice(mutation_options)
         list_ingredients = list(self.ingredients_dictionary.keys())
         if mutation_type == "change_amt":
             self.change_amt(list_ingredients)
-        # elif mutation_type == "change_ingredient":
-        #     self.change_ingredient(list_ingredients)
+        elif mutation_type == "change_ingredient":
+            self.change_ingredient(list_ingredients)
         elif mutation_type == "add_flavor_ingredient":
-            self.add_flavor_ingredient()
-
-            # add_chance = random.uniform(0,1)
-            # if add_chance < .75:
-            #     self.add_flavor_ingredient()
-            # else:
-            #     self.add_pantry_ingredient()
+            add_chance = random.uniform(0,1)
+            if add_chance > .5:
+                self.add_flavor_ingredient()
+            else:
+                self.add_pantry_ingredient
         else:                                                                     
             self.del_ingredient(list_ingredients)
         
@@ -152,12 +150,12 @@ class Recipes:
         """
         pantry_ingredient_set = \
             set(self.pantry.pantry.keys()).difference(self.allergies)
-        ingredient_to_remove = random.choice(list_ingredients).differece(self.essential_ingredients)
-        ingredient_to_add = random.choice(list(pantry_ingredient_set.differece(self.essential_ingredients)))
+        ingredient_to_remove = random.choice(list(set(list_ingredients).difference(self.essential_ingredients)))
+        ingredient_to_add = random.choice(list(pantry_ingredient_set.difference(self.essential_ingredients)))
 
         while len(pantry_ingredient_set) != len(list_ingredients) and \
             ingredient_to_add in self.ingredients_dictionary:
-            ingredient_to_add = random.choice(list(pantry_ingredient_set))
+            ingredient_to_add = random.choice(list(pantry_ingredient_set.difference(self.essential_ingredients)))
 
         del self.ingredients_dictionary[ingredient_to_remove]
         self.ingredients_dictionary[ingredient_to_add] = \
