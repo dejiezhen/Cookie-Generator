@@ -150,6 +150,7 @@ class Recipes:
         """
         pantry_ingredient_set = \
             set(self.pantry.pantry.keys()).difference(self.allergies)
+        # fix bug where list ingredients == self.essential ingredients.
         ingredient_to_remove = random.choice(list(set(list_ingredients).difference(self.essential_ingredients)))
         ingredient_to_add = random.choice(list(pantry_ingredient_set.difference(self.essential_ingredients)))
 
