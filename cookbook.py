@@ -30,10 +30,10 @@ class Cookbook:
         multiple generations of cookbooks are created
 
         Args: 
-            file_list (arr): list of file names to read in for recipes
-            target_generation (int): the total number of generations desired
-            mutation_rate (float): the probability that mutation will occur 
-                                    each time 
+            file_list: array of file names to read in for recipes
+            target_generation: the total number of generations desired
+            mutation_rate: the probability that mutation will occur
+            each time 
         """
         self.file_list = file_list
         self.pantry = Ingredients()
@@ -51,49 +51,78 @@ class Cookbook:
         (diversity of ingredients)
        
         Args: 
-            curr_dictionary (dict): current dictionary of the sort list 
+            curr_dictionary: current dictionary of the sort list 
         """
+
         return len(curr_dictionary.ingredients_dictionary.keys())
         
     def evaluate_unique_ingredients(self, curr_recipe):
+        """
+        Calls evaluate_novel_ingredient on the current recipe
+
+        Args:
+            curr_recipe: current recipe
+        """
+
         return curr_recipe.evaluate_novel_ingredient(self.inspiring_set)
 
     def evaluate_ingredient_cohesion(self, curr_recipe):
+        """
+        Calls evaluate_ingredient_cohesion on the current recipe
+
+        Args:
+            curr_recipe: current recipe
+        """
+
         return curr_recipe.evaluate_ingredient_cohesion()
 
     def evaluate_essential_ingredient(self, curr_recipe):
+        """
+        Calls evaluate_essential_ingredient on the current recipe
+
+        Args:
+            curr_recipe: current recipe
+        """
+
         return curr_recipe.evaluate_essential_ingredient
 
     def evaluate_ingredients_length(self, curr_recipe):
+        """
+        Calls evaluate_ingredients_length on the current recipe
+
+        Args:
+            curr_recipe: current recipe
+        """
+
         return curr_recipe.evaluate_ingredients_length
 
     def combo_evaluate(self, curr_recipe):
+        """
+        Returns the combined average of evaluations (novel ingredients, 
+        ingredient cohesion, essential ingredients, and ingredients length).
 
-        # print("novel ingredient score: ")
-        # print(curr_recipe.evaluate_novel_ingredient(self.inspiring_set))
-        # print('---')
-        # print("cohesion score: ")
-        # print(curr_recipe.evaluate_ingredient_cohesion())
-        # print('---')
-        # print("essential score: ")
-        # print(curr_recipe.evaluate_essential_ingredients())
-        # print('---')
-        # print("length score: ")
-        # print(curr_recipe.evaluate_ingredients_length())
-        # print('---')        
+        Args:
+            curr_recipe: current recipe
+        """
 
         avg_score = curr_recipe.evaluate_novel_ingredient(self.inspiring_set) * \
             curr_recipe.evaluate_ingredient_cohesion() * \
                 curr_recipe.evaluate_essential_ingredients() * \
                     curr_recipe.evaluate_ingredients_length()
-        # print("average score:")
-        # print(avg_score)
-        # print('---')
+        
         self.average_scores.append(avg_score)
         return avg_score
 
 
     def rank_initial_cohesion(self, array):
+        """
+        Sort array of recipes by their ingredients cohesion.
+
+        Args:
+            array: array of recipes
+
+        """
+
         array.sort(reverse=True, key=self.evaluate_ingredient_cohesion)   
         return array
 
@@ -102,7 +131,7 @@ class Cookbook:
         Ranks the recipes on the basis of the evaluate function
         
         Args:
-            None
+            array: array of recipes
         """       
         array.sort(reverse=True, key=self.combo_evaluate)   
         return array
@@ -140,7 +169,7 @@ class Cookbook:
         Gets an array of the ingredients on one side of the pivot.
        
         Args:
-            self: accesses the current class instance
+            none
         """
         pivot_array = [recipe.pivot() for recipe in self.cookbook]
         return pivot_array
@@ -151,7 +180,6 @@ class Cookbook:
         its contents into key, value pairs.
      
         Args:
-            self: accesses the current class instance
             baby_recipe: the recipe created from mergin parents
         """
         ingredient_dict = {}
@@ -171,28 +199,58 @@ class Cookbook:
         Iterates through cookbook to create recipe files.
        
         Args:
-            self: accesses the current class instance
             new_cookbook: the cookbook the recipe files will be made from
         """
         for recipe in new_cookbook:
             recipe.save_recipe_cookbook(self.curr_generation, self.curr_time, self.target_generation)
     
     def get_pivot(self, pivot_array, i):
+        """
+        Returns the first and second pivot from the pivot array.
+
+        Args:
+            pivot_array: the array of pivots
+            i: the parents we are on in that generation's pivot array
+        """
+
         first_pivot = pivot_array[i] 
         second_pivot = pivot_array[i+1] 
         return first_pivot, second_pivot
 
     def get_parents(self, i):
+        """
+        Returns lists of the parents' ingredient dictionary items.
+
+        Args:
+            i: the parents we are on in that generation's pivot array
+        """
+
         parent1 = list(self.cookbook[i].ingredients_dictionary.items())
         parent2 = list(self.cookbook[i+1].ingredients_dictionary.items())
         return parent1, parent2
 
     def partition_parent1(self, first_pivot, parent1):
+        """
+        partitions the parent into the first and second pivot halves
+
+        Args:
+            first_pivot: pivot for parent1
+            parent1: the list for parent1 from get_parents
+        """
+
         parent1_first_half, parent1_second_half = \
                 parent1[:first_pivot], parent1[first_pivot:]
         return parent1_first_half, parent1_second_half
     
     def partition_parent2(self, second_pivot, parent2):
+        """
+        partitions the parent into the first and second pivot halves
+
+        Args:
+            first_pivot: pivot for parent2
+            parent1: the list for parent2 from get_parents
+        """
+
         parent2_first_half, parent2_second_half  = \
             parent2[:second_pivot], parent2[second_pivot:]
         return parent2_first_half, parent2_second_half
@@ -240,11 +298,11 @@ class Cookbook:
             first_baby_dict, second_baby_dict = new_babies
 
             # add together parents' mutations in lineage to then 
-            #   sum those for the new babies 
+            # sum those for the new babies 
             parent_mutations_in_lineage = self.cookbook[i].mutations_in_lineage + \
                 self.cookbook[i+1].mutations_in_lineage
             # self.cookbook[i], self.cookbook[i+1]
-            # Create new baby instances
+            # create new baby instances
             first_baby = Recipes(None, first_baby_dict, self.pantry, \
                 parent_mutations_in_lineage)
             second_baby = Recipes(None, second_baby_dict, self.pantry, \
@@ -268,8 +326,9 @@ class Cookbook:
             baby_list.append(second_baby)
 
         new_baby_list = self.rank(baby_list)
+
         # extract the 50% best of the older cookbook and the 50% 
-        #   best of the baby list to make new cookbook 
+        # best of the baby list to make new cookbook 
         new_cookbook = self.cookbook[:len(self.cookbook)//2] + \
             new_baby_list[:len(new_baby_list)//2] 
         new_cookbook = self.rank(new_cookbook)
@@ -296,6 +355,5 @@ class Cookbook:
             self.merge()
             self.curr_generation += 1
         
-       
         print(self.pantry.pantry)
         print(self.pantry.category_dictionary)

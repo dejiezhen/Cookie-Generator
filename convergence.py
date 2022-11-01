@@ -6,8 +6,13 @@ import matplotlib.pyplot as plt
 class Convergence:
     def __init__(self, cookbook, mutation_rate) -> None:
         """
+        Initializes the Convergence class with cookbook and mutation rate.
 
+        Args:
+            cookbook: cookbook of recipes
+            mutation_rate: mutation rate inputted from user
         """
+
         self.cookbook = cookbook
         self.generation_scores = []
         self.mutation_rate = mutation_rate
@@ -60,8 +65,11 @@ class Convergence:
 
     def convergence_value(self):
         """
-        Take the average of the converged second half of score data 
-        ** ASSUMING WE HAVE OVER 300 GENERATIONS**
+        Take the average of the converged second half of score data, assuming 
+        we have over 300 generations. 
+        
+        Args:
+            none
         """
 
         sum_second_half = \

@@ -1,11 +1,12 @@
 """
-An example of how you could use flavor data to inform your recipe
-generation process.  Requires Python v3.
+Sofía Hamby, Khalil Jackson, Bjorn Ludwig, and Dejie Zhen
+CSCI 3725
+PQ2: Presentation Day
+10/20/2022
 
-The numpy file format is used because it is more efficient
-than reading plain text or CSV files.  You are not restricted to using numpy,
-but I would strongly recommend considering how you might handle one or more
-large datasets as part of your design process.
+flavor_pairing.py contains methods used to determine the similarity of 
+ingredients using dot product, create a dictionary of ingredient pairings for
+an ingredient, and displaying those pairings in a human readable format.
 """
 
 from ast import In
@@ -16,20 +17,36 @@ INGRED_CATEGORIES = np.load('ingred_categories.npy', allow_pickle=True).item()
 INGREDIENT_LIST = sorted(WORD_EMBED_VALS.keys())
 
 def similarity(n1, n2):
-    """Returns the similarity between two ingredients based on our data."""
+    """
+    Returns the similarity between two ingredients based on our data.
+    Args:
+        n1 - the first ingrient
+        n2 - the second ingredient
+    """
+
+    #take the dot product of v1 and v2
     v1 = WORD_EMBED_VALS[n1]
     v2 = WORD_EMBED_VALS[n2]
     return np.dot(v1, v2)
-
 
 def pairing(ingr, threshold, cat=None):
     """
     Describes what flavors are similar to the specified ingredient based on
     a similarity threshold and an optional category to which the flavors
     belong.
+
+    Args:
+        ingr - the ingredient we want to create flavor pairings for
+        threshold - the threshold for similarity between ingredients
+        cat - category of ingredient
     """
+
     pairings = {}
+
+    #creates list of the set difference between indredient list and ingr
     ilist = list(set(INGREDIENT_LIST) - set([ingr]))
+
+    #iterates pairings and uses threshold to create pairings key, value pairs
     for i in ilist:
         if similarity(ingr, i) >= threshold:
             if cat is not None:
@@ -38,15 +55,19 @@ def pairing(ingr, threshold, cat=None):
                         pairings[i] = similarity(ingr, i)
             else:
                 pairings[i] = similarity(ingr, i)
-    # for key, value in sorted(pairings.items(), key=lambda kv: (kv[1],kv[0]), \
-    #     reverse=True):
-    #     print(key, value)
     
     return pairings
 
-
 def request_pairing(ingr, threshold, cat=None):
-    """Displays a specific pairing to the user in a readable way."""
+    """
+    Displays a specific pairing to the user in a readable way.
+
+    Args:
+        ingr - the ingredient we want to create flavor pairings for
+        threshold - the threshold for similarity between ingredients
+        cat - category of ingredient
+    """
+
     if cat:
         print("\nWhat pairs well with " + ingr + " that is a " + cat + "?")
         pairing(ingr, threshold, cat)
@@ -54,28 +75,17 @@ def request_pairing(ingr, threshold, cat=None):
         print("\nWhat pairs well with " + ingr + "?")
         pairing(ingr, threshold)
 
-
 def main():
+    """
+    Requests pairings for green tea and fruit and chocolate.
+    """
+
     print("* * * Here are some examples of searching for Western flavor \
-pairings: * * *")
+    pairings: * * *")
     """request_pairing("orange", 0.1, "herb")
     request_pairing("chocolate", 0.1, "spice")"""
     request_pairing("green tea", 0.6, "fruit")
     request_pairing("chocolate", 0.45)
-    #print(INGREDIENT_LIST)
-    #print(INGRED_CATEGORIES)
-    #print(list(INGRED_CATEGORIES.keys()))
-    #print([*set(list(INGRED_CATEGORIES.values()))])
-    
-    # print(type(request_pairing))
-    # print(request_pairing[0])
-    # request_pairing("", 0.1)
-    #print(INGRED_CATEGORIES)
-    # print("SPACEEeeeeeeeeee----------------------------------")
-    # print(INGREDIENT_LIST)
-    # prints all items with categories from fun list
-    # print(sorted(INGRED_CATEGORIES.items(), key=lambda kv:(kv[1], kv[0])))
-
 
 if __name__ == "__main__":
     main()

@@ -34,9 +34,10 @@ class Recipes:
         Args: 
             file (.txt): recipe file
             ingredients_dictionary (dict): dictionary representation of 
-                                            ingredients
+            ingredients
             pantry (dict): cumulative pantry of ingredients 
         """
+
         self.file = file
         self.ingredients_dictionary = ingredients_dictionary
         self.pantry = pantry
@@ -45,7 +46,6 @@ class Recipes:
         'cashew nut', 'pistachio', 'almond', 'brazil nut'])
         self.essential_ingredients = set(['flour', 'sugar', 'egg', 'butter', 
         'baking soda', 'baking powder'])
-
 
     def process_recipe(self):
         """
@@ -56,6 +56,7 @@ class Recipes:
         Args:
             None
         """
+
         files = open('./input/' + self.file, 'r')
         ingredient_lines = files.readlines()
         for ingredient in ingredient_lines:
@@ -78,6 +79,7 @@ class Recipes:
         Args:
             None
         """
+
         # do not let pivot be at very beginning or end 
         if len(self.ingredients_dictionary) >= 3:
             return random.randint(1, len(self.ingredients_dictionary)-2) 
@@ -93,6 +95,7 @@ class Recipes:
         Args:
             None
         """
+
         sum_val = sum(self.ingredients_dictionary.values())
         rescalar = 55 / sum_val
         for ingredient, amount in self.ingredients_dictionary.items():
@@ -106,7 +109,7 @@ class Recipes:
         Args:
             None
         """
-        # mutation_options = ["add_flavor_ingredient,  "change_ingredient""]
+
         mutation_options = ["change_amt", 
         "add_flavor_ingredient", "del_ingredient", "change_ingredient"]
         mutation_type = random.choice(mutation_options)
@@ -131,11 +134,9 @@ class Recipes:
         Args:
             list_ingredients (arr): list of ingredients
         """
+
         ingredient_to_change = random.choice(list_ingredients)       
-        original_amount = self.ingredients_dictionary[ingredient_to_change]
-        # decrease or increase by up to 50%
-        # amount_modifier = random.uniform(0.5, 1.5)  
-        # amount_modifier = random.uniform(0.75, 1.25)        
+        original_amount = self.ingredients_dictionary[ingredient_to_change]       
         amount_modifier = random.uniform(0.9, 1.1)    
         self.ingredients_dictionary[ingredient_to_change] = original_amount * \
             amount_modifier
@@ -148,6 +149,7 @@ class Recipes:
         Args:
             list_ingredients (arr): list of ingredients
         """
+
         pantry_ingredient_set = \
             set(self.pantry.pantry.keys()).difference(self.allergies)
         # fix bug where list ingredients == self.essential ingredients.
@@ -173,7 +175,8 @@ class Recipes:
         Args:
             None
         """
-        # keys = ingredients
+
+        # keys are ingredients
         pantry_ingredient_set = \
             set(self.pantry.pantry.keys()).difference(self.allergies) 
         # grab new ingredient from pantry
@@ -187,37 +190,35 @@ class Recipes:
             self.pantry.pantry[ingredient_to_add]
 
     def add_flavor_ingredient(self):
+        """
+        Adds ingredients based on how well they pair with others.
 
-        #print(list(INGRED_CATEGORIES.values()))
-        #ingredient_categories = [*set(list(INGRED_CATEGORIES.values()))]
+        Args:
+            none
+        """
 
-        # step 1: pick base ing that new ing will pair with
+        # pick base ing that new ing will pair with
         base_ingredient = \
             random.choice(list(self.ingredients_dictionary.keys()))
         recipe_ingredient_set = \
             set(self.ingredients_dictionary.keys()).difference(self.allergies)
         ingredient_list_set = set(INGREDIENT_LIST).difference(self.allergies)
         set_common = recipe_ingredient_set.intersection(ingredient_list_set)
-        # base_amount = 0
-        #print(INGREDIENT_LIST)
+        
         if len(set_common) == 0:
             # if they don't have anything in common, will not happen
             #  might not get executed at all
             choices = ingredient_list_set
             base_ingredient = random.choice(list(choices))
-            base_amount = 0.55
             print('hit')
         else:
             choices = recipe_ingredient_set.intersection(ingredient_list_set)
             base_ingredient = random.choice(list(choices))
         
-                # base_amount = self.ingredients_dictionary[base_ingredient]
-
         pairings_dictionary = {}
         threshold = 0.001       # could have dicts still that are zero size 
 
         pairings_dictionary = pairing(base_ingredient, threshold)
-        #new_ingredient = max(pairings_dictionary, key=pairings_dictionary.get)
         
         #random choice of top three most cohesive
         find_top_three = Counter(pairings_dictionary)
@@ -237,8 +238,9 @@ class Recipes:
         baking ingredients alone
         
         Args:
-            None
+            list_ingredients: list of ingredients
         """
+
         deletable_list = [ingredient for ingredient in list_ingredients \
                             if ingredient not in self.essential_ingredients]
         if len(deletable_list) > 0:
@@ -246,6 +248,13 @@ class Recipes:
             del self.ingredients_dictionary[ingredient_to_remove]
     
     def get_name(self, sorted_recipe):
+        """
+        Creates a name for the recipe by choosing a random ingredient
+
+        Args:
+            sorted_recipe: recipe sorted by ingredient amount
+        """
+
         random_idx = random.randint(0, len(sorted_recipe)-1)
         random_name = sorted_recipe[random_idx][0]
         return random_name
@@ -254,20 +263,23 @@ class Recipes:
         """
         Give a name based on the second and third most populous ingredient 
         in the recipe. 
+
+        Args:
+            none
         """ 
+
         ingredient_remove_array = ['baking soda', 'flour', 'baking powder']
         # Sorted recipe by value, largest to smallest
         sorted_recipe = sorted(self.ingredients_dictionary.items(), \
             key=lambda x: x[1], reverse=True)
 
-        # first_random_idx = random.randint(0, len(sorted_recipe)-1)
-        # first_random_name = sorted_recipe[first_random_idx][0]
         first_random_name = self.get_name(sorted_recipe)
         while first_random_name in ingredient_remove_array and \
             len(sorted_recipe) > len(ingredient_remove_array):
             first_random_name = self.get_name(sorted_recipe)
 
         second_random_name = self.get_name(sorted_recipe)
+
         # plus one since we don't want the same first random name
         while second_random_name in ingredient_remove_array and \
             len(sorted_recipe) > len(ingredient_remove_array) + 1:
@@ -287,8 +299,13 @@ class Recipes:
 
     def evaluate_novel_ingredient(self, inspiring_set):
         """
-        neeed docstring 
+        Evaluates the novelty of ingredients in the recipe by comparing it to 
+        the inspiring set.
+
+        Args:
+            inspiring_set: 
         """
+
         score = 0
         for inspiring_recipe in inspiring_set: 
             inspiring_ingredients_list = set(inspiring_recipe.ingredients_dictionary.keys())
@@ -302,7 +319,12 @@ class Recipes:
 
     def evaluate_ingredient_cohesion(self):
         """
-        need docstring 
+        Evaluates the cohesion of ingredients in the dictionary by comparing 
+        their cohesion in pairs using similarity function. Then returns a score
+        based on if cohesion reaches our threshold.
+
+        Args:
+            none
         """
 
         ingredients_to_see = list(self.ingredients_dictionary.keys())
@@ -318,9 +340,7 @@ class Recipes:
                     cohesion = similarity(first_ingredient, second_ingredient)
                     if cohesion >= threshold: 
                         score += 1 
-                        #list(INGRED_CATEGORIES.keys())
-                        #replaced if x in IN_LIST
-
+    
         score = score/len(self.ingredients_dictionary) #regularize 
         return score
 
@@ -328,6 +348,7 @@ class Recipes:
         """
         Prioritize recipes that keep as many essential ingredients as possible
         """
+
         score = 0
         for ingredient in self.ingredients_dictionary.keys(): 
             if ingredient in self.essential_ingredients: 
@@ -338,13 +359,23 @@ class Recipes:
         return ratio_score
 
     def calculate_diminishing_penalty(self, difference):
-        # multiply penalty by 0.9 for number of ingredients it's over by 
+        """
+        Multiply penalty by 0.9 for number of ingredients it's over by 
+
+        Args:
+            difference: 
+        """
+
         return 0.9 ** difference
 
     def evaluate_ingredients_length(self):
         """
-        penalize recipes with way too many ingredients 
+        Penalize recipes with way too many ingredients
+
+        Args:
+            none
         """
+
         max_ingredients_length, penalty = 14, 1
         if len(self.ingredients_dictionary) > max_ingredients_length:
             difference = \
@@ -357,11 +388,12 @@ class Recipes:
         Saves recipe as .txt file
         
         Args:
-            generation (int): integer than represents the generation
-            idx (int): number corresponding to the given recipe in the \
+            generation: integer than represents the generation
+            idx: number corresponding to the given recipe in the \
                 generation 
-            curr_time (str): current time
-        """            
+            curr_time: current time
+        """  
+                  
         recipe_name = self.name_recipe()
         file_name = 'gen'+ str(generation) + "_" + recipe_name + '.txt'
         with open("output/" + curr_time + "/" + file_name, 'w') as f:
