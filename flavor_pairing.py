@@ -5,11 +5,16 @@ PQ2: Presentation Day
 10/20/2022
 
 flavor_pairing.py contains methods used to determine the similarity of 
-ingredients using dot product, create a dictionary of ingredient pairings for
-an ingredient, and displaying those pairings in a human readable format.
+ingredients using dot product, create a dictionary of ingredient pairings foar
+an ingredient, and displaying those pairings in a human readable format. 
+This fie containts the following functions...
+    - similarity: returns the similarity between two ingredients
+    - pairing: describes what flavors are similar to the specified ingredient
+    - request_pairing: Displays a specific pairing in a human readable way
+
+Credit for this goes to Professor Harmon for providing it for us!
 """
 
-from ast import In
 import numpy as np
 
 WORD_EMBED_VALS = np.load('ingred_word_emb.npy', allow_pickle=True).item()
@@ -19,9 +24,10 @@ INGREDIENT_LIST = sorted(WORD_EMBED_VALS.keys())
 def similarity(n1, n2):
     """
     Returns the similarity between two ingredients based on our data.
+    
     Args:
-        n1 - the first ingrient
-        n2 - the second ingredient
+        n1: the first ingrient
+        n2: the second ingredient
     """
 
     #take the dot product of v1 and v2
@@ -36,9 +42,9 @@ def pairing(ingr, threshold, cat=None):
     belong.
 
     Args:
-        ingr - the ingredient we want to create flavor pairings for
-        threshold - the threshold for similarity between ingredients
-        cat - category of ingredient
+        ingr: the ingredient we want to create flavor pairings for
+        threshold: the threshold for similarity between ingredients
+        cat: category of ingredient
     """
 
     pairings = {}
@@ -63,9 +69,9 @@ def request_pairing(ingr, threshold, cat=None):
     Displays a specific pairing to the user in a readable way.
 
     Args:
-        ingr - the ingredient we want to create flavor pairings for
-        threshold - the threshold for similarity between ingredients
-        cat - category of ingredient
+        ingr: the ingredient we want to create flavor pairings for
+        threshold: the threshold for similarity between ingredients
+        cat: category of ingredient
     """
 
     if cat:
@@ -78,6 +84,9 @@ def request_pairing(ingr, threshold, cat=None):
 def main():
     """
     Requests pairings for green tea and fruit and chocolate.
+
+    Args:
+        none
     """
 
     print("* * * Here are some examples of searching for Western flavor \

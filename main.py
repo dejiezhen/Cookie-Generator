@@ -6,11 +6,18 @@ PQ2: Presentation Day
 
 The main function takes user input to determine the number of cookie 
 generations and probability of mutation before breeding generations using a 
-newly created cookbook instance. It also asks user if they want a plot of 
-average fitness of each generation.
+newly created cookbook instance.  It also asks user if they want a plot of 
+average fitness of each generation. 
+
+This file contains the following functions...
+    - get_generation_value: gets user input to determine the number of cookie 
+        recipe generations
+    - get mutation probability: gets user input to determine the mutation rate 
+        of the cookie recipes
+    - generate_statistic_plot: generates a statistics plot tracking the average
+        fitness of each generation
 """
 
-from mimetypes import init
 from cookbook import Cookbook
 from convergence import Convergence
 import os

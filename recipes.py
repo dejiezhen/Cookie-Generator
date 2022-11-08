@@ -12,10 +12,22 @@ specifically with the maintanence of recipes through these various functions...
     - normalize_recipe: ensures the recipe amounts sum to one-hundred
     - mutate: mutates the recipe in one of four ways
     - change_amt: chnages the amount of an ingredient
-    - change_ingredient: changed the ingreident
-    - add_ingredient: adds ingredient to recipe
-    - del_ingredient: deletes ingredient from reicpe
-    - save_recipe_cookbook: turns recipe into .txt file
+    - change_ingredient: changes the ingreident
+    - add_pantry_ingredient: add a new ingredient to the recipe from the pantry
+    - add_flavor_ingredient: adds ingredients based on how well they pair with 
+        others
+    - del_ingredient: deletes random, non-essential ingredient
+    - get_name: creates name by choosing random ingredient
+    - name_recipe: names based on the second and third most populous ingredient 
+    - evaluate_novel_ingredient: evaluates the novelty of ingredients in the 
+        recipe
+    - evaluate_ingredient_cohesion: evaluates the cohesion of ingredients 
+    - evaluate_essential_ingredients: prioritize recipes that keep as many 
+        essential ingredients as possible
+    - calculate_diminishing_penalty: multiply penalty by 0.9 for number of 
+        ingredients it's over by 
+    - evaluate_ingredients_length: penalize recipes with too many ingredients
+    - save_recipe_cookbook: save recipes as .txt files
 """
 
 import random
@@ -153,24 +165,24 @@ class Recipes:
         pantry_ingredient_set = \
             set(self.pantry.pantry.keys()).difference(self.allergies)
         # fix bug where list ingredients == self.essential ingredients.
-        ingredient_to_remove = random.choice(list(set(list_ingredients).difference(self.essential_ingredients)))
-        ingredient_to_add = random.choice(list(pantry_ingredient_set.difference(self.essential_ingredients)))
+        ingredient_to_remove = random.choice(list(set(list_ingredients).\
+            difference(self.essential_ingredients)))
+        ingredient_to_add = random.choice(list(pantry_ingredient_set.\
+            difference(self.essential_ingredients)))
 
         while len(pantry_ingredient_set) != len(list_ingredients) and \
             ingredient_to_add in self.ingredients_dictionary:
-            ingredient_to_add = random.choice(list(pantry_ingredient_set.difference(self.essential_ingredients)))
+            ingredient_to_add = random.choice(list(pantry_ingredient_set.\
+                difference(self.essential_ingredients)))
 
         del self.ingredients_dictionary[ingredient_to_remove]
         self.ingredients_dictionary[ingredient_to_add] = \
-            self.pantry.pantry[ingredient_to_add]     # use pantry amount 
-
-        # pass        # addition_options = ["add_ing"re"dient, add_flavored_ing"redient]
+            self.pantry.pantry[ingredient_to_add] 
 
     def add_pantry_ingredient(self):
         """
         Add a new ingredient to the recipe from the pantry (not already in the 
         recipe)
-        # pick random ingredient and find something to pair with and have add
         
         Args:
             None
@@ -194,7 +206,7 @@ class Recipes:
         Adds ingredients based on how well they pair with others.
 
         Args:
-            none
+            None
         """
 
         # pick base ing that new ing will pair with
@@ -265,7 +277,7 @@ class Recipes:
         in the recipe. 
 
         Args:
-            none
+            None
         """ 
 
         ingredient_remove_array = ['baking soda', 'flour', 'baking powder']
@@ -285,15 +297,20 @@ class Recipes:
             len(sorted_recipe) > len(ingredient_remove_array) + 1:
             second_random_name = self.get_name(sorted_recipe)
 
-        while first_random_name == second_random_name and len(sorted_recipe) > 1:
+        while first_random_name == second_random_name and len(sorted_recipe) \
+            > 1:
             second_random_name = self.get_name(sorted_recipe)
 
-        cute_start_names = ["Sweet ", "Zesty ", "Soft ", "Hot ", "Wild ", "Sexy ", "Lively ", "Internet Worthy ", "Violently Delicious "]
+        cute_start_names = ["Sweet ", "Zesty ", "Soft ", "Hot ", "Wild ", \
+            "Sexy ", "Lively ", "Internet Worthy ", "Violently Delicious "]
 
-        cute_end_names = [" mix", " taste explosion", " concoction", " blend", " batch"]
+        cute_end_names = [" mix", " taste explosion", " concoction", " blend",\
+             " batch"]
             
-        recipe_name = (random.choice(cute_start_names) + first_random_name + " and " + \
-            second_random_name + (random.choice(cute_end_names))).replace(' ', '_')
+        recipe_name = (random.choice(cute_start_names) + first_random_name + "\
+             and " + \
+            second_random_name + (random.choice(cute_end_names))).replace(' ',\
+                 '_')
              
         return recipe_name
 
@@ -308,9 +325,11 @@ class Recipes:
 
         score = 0
         for inspiring_recipe in inspiring_set: 
-            inspiring_ingredients_list = set(inspiring_recipe.ingredients_dictionary.keys())
+            inspiring_ingredients_list = set(inspiring_recipe.\
+                ingredients_dictionary.keys())
             ingredients_list = set(self.ingredients_dictionary.keys())
-            different_ingredients = ingredients_list.difference(inspiring_ingredients_list)
+            different_ingredients = ingredients_list.\
+                difference(inspiring_ingredients_list)
             score += len(different_ingredients)
                     
         regularized_score = \
@@ -324,7 +343,7 @@ class Recipes:
         based on if cohesion reaches our threshold.
 
         Args:
-            none
+            None
         """
 
         ingredients_to_see = list(self.ingredients_dictionary.keys())
@@ -332,7 +351,8 @@ class Recipes:
         threshold = 0.4
 
         for first_index in range(0, len(ingredients_to_see) - 1):
-            for second_index in range(first_index + 1, len(ingredients_to_see)):
+            for second_index in range(first_index + 1, \
+                len(ingredients_to_see)):
                 first_ingredient = ingredients_to_see[first_index]
                 second_ingredient = ingredients_to_see[second_index]                
                 if first_ingredient in INGREDIENT_LIST and \
@@ -346,7 +366,10 @@ class Recipes:
 
     def evaluate_essential_ingredients(self):  
         """
-        Prioritize recipes that keep as many essential ingredients as possible
+        Prioritize recipes that keep as many essential ingredients as possible.
+
+        Args:
+            None
         """
 
         score = 0
@@ -354,13 +377,13 @@ class Recipes:
             if ingredient in self.essential_ingredients: 
                 score += 1
 
-        # square the score ratio to further penalize too few essential ingredients 
+        # square the score ratio to further penalize few essential ingredients 
         ratio_score = (score**2) / (len(self.essential_ingredients)**2)
         return ratio_score
 
     def calculate_diminishing_penalty(self, difference):
         """
-        Multiply penalty by 0.9 for number of ingredients it's over by 
+        Multiply penalty by 0.9 for number of ingredients it's over by. 
 
         Args:
             difference: 
@@ -370,10 +393,10 @@ class Recipes:
 
     def evaluate_ingredients_length(self):
         """
-        Penalize recipes with way too many ingredients
+        Penalize recipes with way too many ingredients.
 
         Args:
-            none
+            None
         """
 
         max_ingredients_length, penalty = 14, 1
@@ -385,7 +408,7 @@ class Recipes:
 
     def save_recipe_cookbook(self, generation, curr_time, target_generation):
         """
-        Saves recipe as .txt file
+        Saves recipe as .txt file.
         
         Args:
             generation: integer than represents the generation

@@ -6,11 +6,23 @@ PQ2: Generation Day
 
 The Ingredients.py file houses the Ingredients class, which takes in the 
 original input files of ingedients and creates new files of recipes. It houses 
-the update_pantry function that will tweak the ingreidents and/or their 
-averages in the pantry.
+the following functions...
+    - get_category_amount: gets the amount of an ingredient based on category
+    - update_pantry: tweak the ingreidents and/or their averages in the pantry
+    - find_category_commonality: finds the common ingredients between the 
+        ingredient array and category set
+    - category_match: matches an ingredient with a category
+    - word_match: determines which category to retunr for similarly spelled 
+        ingredients
+    - update_category_dict: updates the category dictionary by changing 
+    the amount in the category or by creating a new dictionary item 
+    - update_category_amount: Updates the amount of an ingredient through its 
+        category
+    - update_pantry_categories: Updates the pantry categories and the category 
+        amounts
 """
 
-from flavor_pairing import INGRED_CATEGORIES, INGREDIENT_LIST
+from flavor_pairing import INGRED_CATEGORIES
 
 class Ingredients:
     def __init__(self):  
@@ -19,7 +31,7 @@ class Ingredients:
         of recipes
 
         Args:
-            self: current class instance
+            none
         """      
 
         self.pantry = {}
@@ -77,13 +89,13 @@ class Ingredients:
             else:
                 self.pantry[name] = amount
 
-    def find_category_commonality(self, curr_ingredient_arr, category_set, category):
+    def find_category_commonality(self, curr_ingredient_arr, \
+        category_set, category):
         """
-        Find the common ingredients between the ingredient array and category 
+        Finds the common ingredients between the ingredient array and category 
         set and returns them.
         
         Args:
-            self: current class instance
             curr_ingredient_arr: current ingredient array
             category_set: set of categories
             category: the current category
@@ -95,10 +107,11 @@ class Ingredients:
   
     def category_match(self, curr_ingredient):
         """
-        Matches an ingredient with a category
+        Matches an ingredient with a category. Determines if current 
+        ingredients share commonality with the category, then it returns an 
+        updated category.
 
         Args:
-            self: current class instance
             curr_ingredient: current ingredient
         """
 
@@ -108,18 +121,23 @@ class Ingredients:
         for category in category_set:
             category_copy = category[:]
             curr_ingredient_arr = set(curr_ingredient.split(' '))
-            if self.find_category_commonality(curr_ingredient_arr, set([category[:]]), category):
+            if self.find_category_commonality(curr_ingredient_arr, \
+                set([category[:]]), category):
                 categories = category
 
             curr_category_set = set(category[:].split('/'))
             if len(curr_category_set) > 1 and \
-                self.find_category_commonality(curr_ingredient_arr, curr_category_set, category):
-                categories = self.find_category_commonality(curr_ingredient_arr, curr_category_set, category) 
+                self.find_category_commonality(curr_ingredient_arr, \
+                    curr_category_set, category):
+                categories = self.find_category_commonality\
+                    (curr_ingredient_arr, curr_category_set, category) 
 
             curr_category_set = set(category_copy.split(' '))
             if len(curr_category_set) > 1 and \
-                self.find_category_commonality(curr_ingredient_arr, curr_category_set, category):
-                categories = self.find_category_commonality(curr_ingredient_arr, curr_category_set, category) 
+                self.find_category_commonality(curr_ingredient_arr, \
+                    curr_category_set, category):
+                categories = self.find_category_commonality\
+                    (curr_ingredient_arr, curr_category_set, category) 
 
         return categories
 
@@ -129,7 +147,6 @@ class Ingredients:
         essentially matching, return the category that is in categories.
 
         Args:
-            self: current class instance
             curr_ingredient: current ingredient
         """
 
@@ -140,8 +157,10 @@ class Ingredients:
             if category_ingredient[0] != curr_ingredient[0]:
                 continue
 
-            min_len_ingredient = min(len(curr_ingredient), len(category_ingredient))
-            max_len_ingredient = max(len(curr_ingredient), len(category_ingredient))
+            min_len_ingredient = min(len(curr_ingredient), \
+                len(category_ingredient))
+            max_len_ingredient = max(len(curr_ingredient), \
+                len(category_ingredient))
             counter  = 0
 
             for i in range(min_len_ingredient):
@@ -150,22 +169,25 @@ class Ingredients:
             
             if (counter/max_len_ingredient)>= .75:
                 category = \
-                    INGRED_CATEGORIES[curr_ingredient] if curr_ingredient in INGRED_CATEGORIES else INGRED_CATEGORIES[category_ingredient]
+                    INGRED_CATEGORIES[curr_ingredient] if curr_ingredient in \
+                        INGRED_CATEGORIES else \
+                            INGRED_CATEGORIES[category_ingredient]
         return category
 
     def update_category_dict(self, ingredient_category, amount):
         """
-        Updates the category dictionary by either changing the amount in the 
-        category or creating a new dictionary item.
+        Updates the category dictionary by either 1. changing the amount in the 
+        category by halfing the sum of the category amount by the inputted 
+        amount or 2. creating a new dictionary item using the inputted amount.
 
         Args:
-            self: current class instance
             ingredient_category: category of ingredient
             amount: amount of ingredient
         """
 
         if ingredient_category in self.category_dictionary:
-            current_category_amount = self.category_dictionary[ingredient_category]
+            current_category_amount = self.category_dictionary\
+                [ingredient_category]
             new_category_amount = (current_category_amount + amount) / 2
             self.category_dictionary[ingredient_category] = new_category_amount
         else:
@@ -173,10 +195,12 @@ class Ingredients:
 
     def update_category_amount(self, recipe):
         """
-        Updates the amount of an ingredient through its category.
+        Updates the amount of an ingredient through its category.  Determines 
+        if ingredient is already a category first.  If it is, we update that 
+        category's amount.  If it is not, then me match it to a category and 
+        set its amount equal to a category amount.
 
         Args:
-            self: current class instance
             recipe: current recipe we are updating the category amount
         """
         
@@ -199,7 +223,6 @@ class Ingredients:
         Updates the pantry categories and the category amounts.
 
         Args:
-            self: current class instance
             recipe: current recipe we want to update the pantry
         """
 
