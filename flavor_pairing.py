@@ -80,21 +80,3 @@ def request_pairing(ingr, threshold, cat=None):
     else:
         print("\nWhat pairs well with " + ingr + "?")
         pairing(ingr, threshold)
-
-def main():
-    """
-    Requests pairings for green tea and fruit and chocolate.
-
-    Args:
-        none
-    """
-
-    print("* * * Here are some examples of searching for Western flavor \
-    pairings: * * *")
-    """request_pairing("orange", 0.1, "herb")
-    request_pairing("chocolate", 0.1, "spice")"""
-    request_pairing("green tea", 0.6, "fruit")
-    request_pairing("chocolate", 0.45)
-
-if __name__ == "__main__":
-    main()
